@@ -104,7 +104,7 @@ class Troop:
             )
             / 100
         )
-        self.weight = round(bmi * self.height**2, 2)
+        self.weight = round(bmi * (self.height/100)**2, 2)
 
         self.rank = random.choices(
             list(config_ranks.data.keys()),
