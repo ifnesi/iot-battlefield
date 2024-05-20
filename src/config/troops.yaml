@@ -1,0 +1,83 @@
+
+# General configuration
+general:
+  normal_pulse_rate_min: 60
+  normal_pulse_rate_max: 120
+  normal_body_temperature_min: 36.1
+  normal_body_temperature_max: 37.2
+  bmi_min: 20
+  bmi_max: 29
+  height_min: 155
+  height_max: 200
+  deceased_if_pulse_rate_under: 20
+  deceased_if_body_temperature_under: 32
+
+# Troops deployment
+deployment:
+  number_of_troops: 10
+  start_latitude: 50.717469
+  start_longitude: 4.397911
+  bearing_angle_min: -5
+  bearing_angle_max: 5
+  moving_speed_kph_min: 4
+  moving_speed_kph_max: 8
+  troops_distance_between: 5
+  seconds_between_moves: 1
+
+# Blood types probability distribution
+blood_types:
+  O+: 36
+  O-: 13
+  A+: 30
+  A-: 8
+  B+: 8
+  B-: 2
+  AB+: 2
+  AB-: 1
+
+# Percentage of ranks to be deployed
+ranks:
+  Lieutenant Colonel: 1
+  Major: 4
+  Captain: 10
+  Lieutenant: 20
+  Second Lieutenant: 65
+
+# Injures
+injures:
+  leg:
+    probability: 1
+    death_minutes: 30
+    pulse_rate_surge: 20
+    body_temperature_drop: 0.5
+    moving_speed_kph: 1
+  arm:
+    probability: 1
+    death_minutes: 30
+    pulse_rate_surge: 20
+    body_temperature_drop: 0.5
+    moving_speed_kph: 2
+  belly:
+    probability: 0.5
+    death_minutes: 15
+    pulse_rate_surge: 40
+    body_temperature_drop: 1
+    moving_speed_kph: 0.1
+  chest:
+    probability: 0.5
+    death_minutes: 10
+    pulse_rate_surge: 40
+    body_temperature_drop: 1
+    moving_speed_kph: 0.1
+  neck:
+    probability: 0.25
+    death_minutes: 5
+    pulse_rate_surge: 50
+    body_temperature_drop: 2
+    moving_speed_kph: 0
+  head:
+    probability: 0.1
+    death_minutes: 1
+    pulse_rate_surge: 50
+    body_temperature_drop: 2
+    moving_speed_kph: 0
