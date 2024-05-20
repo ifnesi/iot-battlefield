@@ -245,10 +245,9 @@ class Troop:
                         min(
                             self.pulse_rate
                             + random.randint(
-                                int(self._config_general.normal_pulse_rate_min * 100),
-                                int(self._config_general.normal_pulse_rate_max * 100),
-                            )
-                            / 100,
+                                -5,
+                                5,
+                            ),
                             self._config_general.normal_pulse_rate_max,
                         ),
                         self._config_general.normal_pulse_rate_min,
