@@ -1,0 +1,66 @@
+# Tanks deployment
+deployment:
+  number_of_tanks: 10
+  start_latitude: 50.717469
+  start_longitude: 4.397911
+  bearing_angle_min: -5
+  bearing_angle_max: 5
+  tanks_distance_between: 20
+  seconds_between_moves: 1
+  damage_probability_min: 1
+  damage_probability_max: 5
+  damage_impact_min: 1
+  damage_impact_max: 5
+
+# Tanks models
+models:
+  Challenger2:
+    proportion: 20
+    moving_speed_kph_min: 10
+    moving_speed_kph_max: 40
+    ammunition_min: 250
+    ammunition_max: 500
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 5
+    damage_can_support_min: 50
+    damage_can_support_max: 75
+  Warrior:
+    proportion: 20
+    moving_speed_kph_min: 10
+    moving_speed_kph_max: 40
+    ammunition_min: 250
+    ammunition_max: 500
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 5
+    damage_can_support_min: 50
+    damage_can_support_max: 75
+  Bulldog:
+    proportion: 20
+    moving_speed_kph_min: 10
+    moving_speed_kph_max: 40
+    ammunition_min: 250
+    ammunition_max: 500
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 5
+    damage_can_support_min: 50
+    damage_can_support_max: 75
+  FV430:
+    proportion: 20
+    moving_speed_kph_min: 10
+    moving_speed_kph_max: 40
+    ammunition_min: 250
+    ammunition_max: 500
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 5
+    damage_can_support_min: 50
+    damage_can_support_max: 75
+  Stormer:
+    proportion: 20
+    moving_speed_kph_min: 10
+    moving_speed_kph_max: 40
+    ammunition_min: 250
+    ammunition_max: 500
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 5
+    damage_can_support_min: 50
+    damage_can_support_max: 75

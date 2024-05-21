@@ -167,6 +167,7 @@ class Troop:
             "weight": self.weight,
             "blood_type": self.blood_type,
             "rank": self.rank,
+            "timestamp": int(1000 * self.timestamp),
         }
 
     def payload_transactional(self) -> dict:
@@ -208,6 +209,8 @@ class Troop:
         timestamp = time.time()
 
         if not self.deceased:
+
+            _delta_time = timestamp - self.timestamp
 
             if self.injury is None:
                 self.injury = random.choices(
@@ -276,8 +279,6 @@ class Troop:
                     ),
                     2,
                 )
-
-            _delta_time = timestamp - self.timestamp
 
             if self._config_injury.data[self.injury].able_to_use_ammo:
                 _rps = (

@@ -28,4 +28,5 @@ do
     sleep 1
 done
 
-exec python deploy_troops.py
+exec python deploy_troops.py &
+exec python deploy_tanks.py

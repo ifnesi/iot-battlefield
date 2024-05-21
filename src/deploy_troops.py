@@ -8,7 +8,7 @@ from dotenv import load_dotenv, find_dotenv
 from threading import Thread
 
 from utils.gps import Coordinate, Coordinates
-from utils.troop import (
+from utils.troops import (
     Troop,
     ConfigTroopsGeneral,
     ConfigTroopsDeployment,
@@ -78,6 +78,6 @@ if __name__ == "__main__":
     while True:
         for troop in troops:
             troop.move()
-            queue_troops.put(troop.payload_transactional())
+            queue_moves.put(troop.payload_transactional())
             logging.info(troop.payload_transactional())
         time.sleep(troops_config_deployment.seconds_between_moves)
