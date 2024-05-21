@@ -23,6 +23,10 @@ deployment:
   moving_speed_kph_max: 8
   troops_distance_between: 5
   seconds_between_moves: 1
+  ammunition_min: 250
+  ammunition_max: 500
+  ammunition_rps_min: 1
+  ammunition_rps_max: 5
 
 # Blood types probability distribution
 blood_types:
@@ -51,33 +55,39 @@ injures:
     pulse_rate_surge: 20
     body_temperature_drop: 0.5
     moving_speed_kph: 1
+    able_to_use_ammo: true
   arm:
     probability: 1
     death_minutes: 30
     pulse_rate_surge: 20
     body_temperature_drop: 0.5
     moving_speed_kph: 2
+    able_to_use_ammo: true
   belly:
     probability: 0.5
     death_minutes: 15
     pulse_rate_surge: 40
     body_temperature_drop: 1
     moving_speed_kph: 0.1
+    able_to_use_ammo: true
   chest:
     probability: 0.5
     death_minutes: 10
     pulse_rate_surge: 40
     body_temperature_drop: 1
     moving_speed_kph: 0.1
+    able_to_use_ammo: false
   neck:
     probability: 0.25
     death_minutes: 5
     pulse_rate_surge: 50
     body_temperature_drop: 2
     moving_speed_kph: 0
+    able_to_use_ammo: false
   head:
     probability: 0.1
     death_minutes: 1
     pulse_rate_surge: 50
     body_temperature_drop: 2
     moving_speed_kph: 0
+    able_to_use_ammo: false

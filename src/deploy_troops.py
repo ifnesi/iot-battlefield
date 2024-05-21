@@ -50,8 +50,8 @@ if __name__ == "__main__":
 
     # Deploy troops
     start = Coordinate(
-        troops_config_deployment.start_latitude,
-        troops_config_deployment.start_longitude,
+        lat=troops_config_deployment.start_latitude,
+        lon=troops_config_deployment.start_longitude,
     )
     c = Coordinates()
     troops = list()

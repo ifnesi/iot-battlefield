@@ -1,5 +1,6 @@
 import time
 import random
+import hashlib
 
 from faker import Faker
 from typing import Dict
@@ -31,6 +32,10 @@ class ConfigTroopsDeployment(BaseModel):
     moving_speed_kph_max: float
     troops_distance_between: float
     seconds_between_moves: float
+    ammunition_min: int
+    ammunition_max: int
+    ammunition_rps_min: float
+    ammunition_rps_max: float
 
 
 class ConfigTroopsBloodTypes(BaseModel):
@@ -47,21 +52,26 @@ class ConfigTroopsInjuryBase(BaseModel):
     pulse_rate_surge: float
     body_temperature_drop: float
     moving_speed_kph: float
+    able_to_use_ammo: bool
 
 
 class ConfigTroopsInjury(BaseModel):
     data: Dict[str, ConfigTroopsInjuryBase]
+
     @field_validator("data")
     def add_no_injury(cls, data):
-        sum_prob = sum(value.probability for value in data.values())
+        print(data.values())
+        sum_prob = sum([value.probability for value in data.values()])
         data[None] = ConfigTroopsInjuryBase(
-            probability=100-sum_prob,
+            probability=(100 - sum_prob) if sum_prob < 100 else 50 * sum_prob,
             death_minutes=0,
             pulse_rate_surge=0,
             body_temperature_drop=0,
             moving_speed_kph=0,
+            able_to_use_ammo=True,
         )
         return data
+
 
 class Troop:
     def __init__(
@@ -87,24 +97,33 @@ class Troop:
         }
 
         f = Faker()
-        self.id = f"troop_{random.randint(1000000, 9999999)}"
         self.name = f.name()
+        self.id = f"troop_{hashlib.sha256(self.name.encode('utf-8')).hexdigest()[:12]}"
 
         bmi = (
             random.randint(
-                int(config_general.bmi_min * 100),
-                int(config_general.bmi_max * 100),
+                int(config_general.bmi_min * 10000),
+                int(config_general.bmi_max * 10000),
             )
-            / 100
+            / 10000
         )
         self.height = (
             random.randint(
-                int(config_general.height_min * 100),
-                int(config_general.height_max * 100),
+                int(config_general.height_min * 10000),
+                int(config_general.height_max * 10000),
             )
-            / 100
+            / 10000
         )
-        self.weight = round(bmi * (self.height/100)**2, 2)
+        self.weight = round(bmi * (self.height / 100) ** 2, 2)
+
+        self.ammo = (
+            random.randint(
+                int(config_deployment.ammunition_min * 10000),
+                int(config_deployment.ammunition_max * 10000),
+            )
+            / 10000
+        )
+        self._ammo_shot = 0
 
         self.rank = random.choices(
             list(config_ranks.data.keys()),
@@ -120,24 +139,24 @@ class Troop:
 
         self.body_temperature = (
             random.randint(
-                int(config_general.normal_body_temperature_min * 100),
-                int(config_general.normal_body_temperature_max * 100),
+                int(config_general.normal_body_temperature_min * 10000),
+                int(config_general.normal_body_temperature_max * 10000),
             )
-            / 100
+            / 10000
         )
         self.pulse_rate = (
             random.randint(
-                int(config_general.normal_pulse_rate_min * 100),
-                int(config_general.normal_pulse_rate_max * 100),
+                int(config_general.normal_pulse_rate_min * 10000),
+                int(config_general.normal_pulse_rate_max * 10000),
             )
-            / 100
+            / 10000
         )
         self._bearing_angle = (
             random.randint(
-                int(config_deployment.bearing_angle_min * 100),
-                int(config_deployment.bearing_angle_max * 100),
+                int(config_deployment.bearing_angle_min * 10000),
+                int(config_deployment.bearing_angle_max * 10000),
             )
-            / 100
+            / 10000
         )
 
     def payload_non_transactional(self) -> dict:
@@ -158,11 +177,12 @@ class Troop:
             "timestamp": int(1000 * self.timestamp),
             "body_temperature": self.body_temperature,
             "pulse_rate": self.pulse_rate,
-            "deceased": self.deceased,
+            "ammo": max(int(self.ammo - self._ammo_shot), 0),
             "injury": self.injury,
             "injury_time": None
             if self.injury_time is None
             else int(1000 * self.injury_time),
+            "deceased": self.deceased,
         }
 
     def move(self) -> None:
@@ -186,7 +206,7 @@ class Troop:
             return round(m + (M - m) * (T - t) / T, 2)
 
         timestamp = time.time()
-        
+
         if not self.deceased:
 
             if self.injury is None:
@@ -204,7 +224,9 @@ class Troop:
                 _speed = self._config_injury.data[self.injury].moving_speed_kph / 3.6
 
                 if _delta_injury_time == 0:
-                    self.pulse_rate += self._config_injury.data[self.injury].pulse_rate_surge
+                    self.pulse_rate += self._config_injury.data[
+                        self.injury
+                    ].pulse_rate_surge
                     self.body_temperature = max(
                         self.body_temperature
                         - self._config_injury.data[self.injury].body_temperature_drop,
@@ -236,9 +258,9 @@ class Troop:
 
             else:
                 _speed = random.randint(
-                    int(self._config_deployment.moving_speed_kph_min * 100),
-                    int(self._config_deployment.moving_speed_kph_max * 100),
-                ) / (3.6 * 100)
+                    int(self._config_deployment.moving_speed_kph_min * 10000),
+                    int(self._config_deployment.moving_speed_kph_max * 10000),
+                ) / (3.6 * 10000)
 
                 self.pulse_rate = round(
                     max(
@@ -256,6 +278,18 @@ class Troop:
                 )
 
             _delta_time = timestamp - self.timestamp
+
+            if self._config_injury.data[self.injury].able_to_use_ammo:
+                _rps = (
+                    random.randint(
+                        int(self._config_deployment.ammunition_rps_min * 10000),
+                        int(self._config_deployment.ammunition_rps_max * 10000),
+                    )
+                    / 10000
+                )
+                if self._ammo_shot < self.ammo:
+                    self._ammo_shot += _rps * _delta_time
+
             distance = _speed * (_delta_time)
             self.current_location = self._coordinates.destination(
                 self.current_location,
