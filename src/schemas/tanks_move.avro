@@ -21,11 +21,11 @@
         },
         {
             "name": "damage",
-            "type": float
+            "type": "double"
         },
         {
             "name": "current_speed",
-            "type": float
+            "type": "double"
         },
         {
             "name": "destroyed",

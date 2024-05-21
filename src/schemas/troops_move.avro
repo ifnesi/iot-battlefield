@@ -29,13 +29,11 @@
         },
         {
             "name": "injury",
-            "type": ["null", "string"],
-            "default": null
+            "type": ["null", "string"]
         },
         {
             "name": "injury_time",
             "type": ["null", "long"],
-            "default": null,
             "logicalType": "time-millis"
         },
         {

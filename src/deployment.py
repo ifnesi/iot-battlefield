@@ -9,9 +9,7 @@ if __name__ == "__main__":
         "tanks",
         "troops",
     ]
-    parser = argparse.ArgumentParser(
-        description="Python emulator - IoT Battlefield"
-    )
+    parser = argparse.ArgumentParser(description="Python emulator - IoT Battlefield")
     parser.add_argument(
         "--target",
         help=f"Select target unit to be deployed. Valid options are: {', '.join(TARGETS)}",
@@ -23,5 +21,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    FILE_APP = os.path.splitext(os.path.split(__file__)[-1])[0]
-    deploy(FILE_APP, args.target)
+    deploy(args.target)

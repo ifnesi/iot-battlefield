@@ -25,7 +25,7 @@
         },
         {
             "name": "rank",
-            "type": "double"
+            "type": "string"
         },
         {
             "name": "timestamp",

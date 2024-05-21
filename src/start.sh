@@ -19,6 +19,7 @@ do
     echo -n "."
     sleep 1
 done
+sleep 1
 
 echo ""
 logging "Waiting Confluent Control Center to be ready" "INFO" -n
@@ -27,6 +28,7 @@ do
     echo -n "."
     sleep 1
 done
+sleep 1
 
-exec python deploy_troops.py &
-exec python deploy_tanks.py
+exec python deployment.py --target=tanks &
+exec python deployment.py --target=troops

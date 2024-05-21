@@ -107,13 +107,13 @@ class Troop:
             )
             / 10000
         )
-        self.height = (
+        self.height = round((
             random.randint(
                 int(config_general.height_min * 10000),
                 int(config_general.height_max * 10000),
             )
             / 10000
-        )
+        ),2)
         self.weight = round(bmi * (self.height / 100) ** 2, 2)
 
         self.ammo = (
@@ -137,20 +137,20 @@ class Troop:
             k=1,
         )[0]
 
-        self.body_temperature = (
+        self.body_temperature = round((
             random.randint(
                 int(config_general.normal_body_temperature_min * 10000),
                 int(config_general.normal_body_temperature_max * 10000),
             )
             / 10000
-        )
-        self.pulse_rate = (
+        ),2)
+        self.pulse_rate = round((
             random.randint(
                 int(config_general.normal_pulse_rate_min * 10000),
                 int(config_general.normal_pulse_rate_max * 10000),
             )
             / 10000
-        )
+        ), 2)
         self._bearing_angle = (
             random.randint(
                 int(config_deployment.bearing_angle_min * 10000),
@@ -175,7 +175,6 @@ class Troop:
             "id": self.id,
             "lat": self.current_location.lat,
             "lon": self.current_location.lon,
-            "timestamp": int(1000 * self.timestamp),
             "body_temperature": self.body_temperature,
             "pulse_rate": self.pulse_rate,
             "ammo": max(int(self.ammo - self._ammo_shot), 0),
@@ -184,6 +183,7 @@ class Troop:
             if self.injury_time is None
             else int(1000 * self.injury_time),
             "deceased": self.deceased,
+            "timestamp": int(1000 * self.timestamp),
         }
 
     def move(self) -> None:
