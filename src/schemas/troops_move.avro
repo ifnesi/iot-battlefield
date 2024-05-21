@@ -1,0 +1,51 @@
+{
+    "name": "troops_move",
+    "namespace": "iot_battlefield.confluent.io",
+    "type": "record",
+    "fields": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "lat",
+            "type": "double"
+        },
+        {
+            "name": "lon",
+            "type": "double"
+        },
+        {
+            "name": "body_temperature",
+            "type": "double"
+        },
+        {
+            "name": "pulse_rate",
+            "type": "double"
+        },
+        {
+            "name": "ammo",
+            "type": "int"
+        },
+        {
+            "name": "injury",
+            "type": ["null", "string"],
+            "default": null
+        },
+        {
+            "name": "injury_time",
+            "type": ["null", "long"],
+            "default": null,
+            "logicalType": "time-millis"
+        },
+        {
+            "name": "deceased",
+            "type": "boolean"
+        },
+        {
+            "name": "timestamp",
+            "type": "long",
+            "logicalType": "time-millis"
+        }
+    ]
+}

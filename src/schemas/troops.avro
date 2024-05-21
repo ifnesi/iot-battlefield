@@ -1,0 +1,36 @@
+{
+    "name": "troops",
+    "namespace": "iot_battlefield.confluent.io",
+    "type": "record",
+    "fields": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "height",
+            "type": "double"
+        },
+        {
+            "name": "weight",
+            "type": "double"
+        },
+        {
+            "name": "blood_type",
+            "type": "string"
+        },
+        {
+            "name": "rank",
+            "type": "double"
+        },
+        {
+            "name": "timestamp",
+            "type": "long",
+            "logicalType": "time-millis"
+        }
+    ]
+}
