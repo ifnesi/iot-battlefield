@@ -23,14 +23,14 @@ class ConfigTroopsGeneral(BaseModel):
 
 
 class ConfigTroopsDeployment(BaseModel):
-    number_of_troops: int
+    number_of_units: int
     start_latitude: float
     start_longitude: float
     bearing_angle_min: int
     bearing_angle_max: int
     moving_speed_kph_min: float
     moving_speed_kph_max: float
-    troops_distance_between: float
+    distance_between_units: float
     seconds_between_moves: float
     ammunition_min: int
     ammunition_max: int

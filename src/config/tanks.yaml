@@ -1,11 +1,11 @@
 # Tanks deployment
 deployment:
-  number_of_tanks: 10
+  number_of_units: 50
   start_latitude: 50.717469
   start_longitude: 4.397911
   bearing_angle_min: -5
   bearing_angle_max: 5
-  tanks_distance_between: 20
+  distance_between_units: 20
   seconds_between_moves: 1
   damage_probability_min: 1
   damage_probability_max: 5

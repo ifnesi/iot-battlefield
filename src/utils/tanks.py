@@ -9,12 +9,12 @@ from utils.gps import Coordinate, Coordinates
 
 
 class ConfigTanksDeployment(BaseModel):
-    number_of_tanks: int
+    number_of_units: int
     start_latitude: float
     start_longitude: float
     bearing_angle_min: float
     bearing_angle_max: float
-    tanks_distance_between: float
+    distance_between_units: float
     seconds_between_moves: float
     damage_probability_min: float
     damage_probability_max: float

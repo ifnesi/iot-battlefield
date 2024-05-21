@@ -13,14 +13,14 @@ general:
 
 # Troops deployment
 deployment:
-  number_of_troops: 10
+  number_of_units: 100
   start_latitude: 50.717469
   start_longitude: 4.397911
   bearing_angle_min: -5
   bearing_angle_max: 5
   moving_speed_kph_min: 4
   moving_speed_kph_max: 8
-  troops_distance_between: 5
+  distance_between_units: 5
   seconds_between_moves: 1
   ammunition_min: 250
   ammunition_max: 500
