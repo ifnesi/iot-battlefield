@@ -83,4 +83,3 @@ services:
     depends_on:
       - broker
       - schema-registry
-      - control-center
