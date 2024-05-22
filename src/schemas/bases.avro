@@ -1,0 +1,32 @@
+{
+    "name": "tanks",
+    "namespace": "iot_battlefield.confluent.io",
+    "type": "record",
+    "fields": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "type",
+            "type": "string"
+        },
+        {
+            "name": "lat",
+            "type": "double"
+        },
+        {
+            "name": "lon",
+            "type": "double"
+        },
+        {
+            "name": "timestamp",
+            "type": "long",
+            "logicalType": "time-millis"
+        }
+    ]
+}

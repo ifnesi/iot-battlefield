@@ -1,0 +1,28 @@
+# Kafka config
+kafka:
+  client_id: iot_battlefield_bases
+  topic_data: iot_battlefield_bases
+  topic_move: ""
+
+# Bases types and locations
+bases:
+  base_01:
+    name: Fort Arsenal
+    type: ammunition
+    latitude: 50.67609024
+    longitude: 4.38077882
+  base_02:
+    name: Provision Point
+    type: food
+    latitude: 50.66881689
+    longitude: 4.37875479
+  base_03:
+    name: Equipment Depot
+    type: equipment
+    latitude: 50.67855992
+    longitude: 4.38635565
+  base_04:
+    name: Medicor
+    type: medical
+    latitude: 50.6860193
+    longitude: 4.36845399

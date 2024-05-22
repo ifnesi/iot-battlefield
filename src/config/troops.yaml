@@ -1,8 +1,8 @@
 # Kafka config
 kafka:
-  client_id: iot_battlefield_tanks
-  topic_data: iot_battlefield_tanks
-  topic_move: iot_battlefield_tanks_moves
+  client_id: iot_battlefield_troops
+  topic_data: iot_battlefield_troops
+  topic_move: iot_battlefield_troops_moves
 
 # General configuration
 general:
@@ -20,13 +20,14 @@ general:
 # Troops deployment
 deployment:
   number_of_units: 100
-  start_latitude: 50.717469
-  start_longitude: 4.397911
+  start_latitude: 50.67615541
+  start_longitude: 4.40630927
   bearing_angle_min: -5
   bearing_angle_max: 5
   moving_speed_kph_min: 4
   moving_speed_kph_max: 8
   distance_between_units: 5
+  bearing_angle_between_units: 90
   seconds_between_moves: 1
   ammunition_min: 250
   ammunition_max: 500

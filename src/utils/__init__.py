@@ -18,6 +18,7 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroSerializer
 
 from utils.gps import Coordinates
+from utils.bases import Base
 from utils.tanks import Tank
 from utils.troops import Troop
 from utils.basemodels import (
@@ -30,6 +31,7 @@ from utils.basemodels import (
     ConfigTroopsRanks,
     ConfigTroopsBloodTypes,
     ConfigTroopsInjury,
+    ConfigBases,
 )
 
 
@@ -50,6 +52,11 @@ class Kafka:
         self.producer = Producer(kafka_config["kafka"])
         self.topic_data = unit_config.topic_data
         self.topic_move = unit_config.topic_move
+        self.stop_thread = False
+
+        # Data queues
+        self.queue_data = queue.Queue()
+        self.queue_moves = queue.Queue()
 
         # Schema Registry
         schema_registry_config = dict(kafka_config["schema-registry"])
@@ -60,15 +67,13 @@ class Kafka:
                 schema_registry_client,
                 schema_str=f.read(),
             )
-        with open(os.path.join("schemas", f"{target}_move.avro"), "r") as f:
-            self.avro_serializer_move = AvroSerializer(
-                schema_registry_client,
-                schema_str=f.read(),
-            )
-
-        # Data queues
-        self.queue_data = queue.Queue()
-        self.queue_moves = queue.Queue()
+        moves_files = os.path.join("schemas", f"{target}_move.avro")
+        if os.path.exists(moves_files):
+            with open(moves_files, "r") as f:
+                self.avro_serializer_move = AvroSerializer(
+                    schema_registry_client,
+                    schema_str=f.read(),
+                )
 
     def delivery_report(
         self,
@@ -85,9 +90,11 @@ class Kafka:
             )
 
     def process_queues(self) -> None:
+        exit_if_zero = 60
         while True:
             try:
                 payload = None
+
                 if not self.queue_data.empty():
                     payload = self.queue_data.get()
                     topic = self.topic_data
@@ -98,6 +105,12 @@ class Kafka:
                     topic = self.topic_move
                     serialiser = self.avro_serializer_move
                     self.queue_moves.task_done()
+                else:
+                    time.sleep(0.5)
+                    if self.stop_thread:
+                        exit_if_zero -= 1
+                    if exit_if_zero == 0:
+                        break
 
                 if payload is not None:
                     self.producer.poll(0)
@@ -155,7 +168,8 @@ def deploy_units(
             "config_deployment": config_deployment,
             "config_models": config_models,
         }
-    else:  # troops
+
+    elif target == "troops":
         config_general = ConfigTroopsGeneral(**config["general"])
         config_deployment = ConfigTroopsDeployment(**config["deployment"])
         config_ranks = ConfigTroopsRanks(data=config["ranks"])
@@ -171,6 +185,12 @@ def deploy_units(
             "config_injury": config_injury,
         }
 
+    elif target == "bases":
+        config_bases = ConfigBases(data=config["bases"])
+
+    else:
+        raise Exception(f"Invalid target '{target}'")
+
     # Kafka
     if not dry_run:
         kafka_config_file = os.environ.get("KAFKA_CONFIG")
@@ -183,46 +203,67 @@ def deploy_units(
         )
 
         # Start thread to process queues
-        Thread(
+        kafka_thread = Thread(
             target=kafka.process_queues,
-        ).start()
+        )
+        kafka_thread.start()
 
-    # Deploy units
-    c = Coordinates()
-    start = Coordinate(
-        lat=config_deployment.start_latitude,
-        lon=config_deployment.start_longitude,
-    )
-
-    units = list()
-    for n in range(config_deployment.number_of_units):
-        try:
-            start = c.destination(
-                start,
-                90,
-                config_deployment.distance_between_units,
-            )
-            params["start_point"] = start
-            units.append(class_to_call(**params))
-            payload = units[n].payload_non_transactional()
-            logging.info(payload)
-            if not dry_run:
-                kafka.queue_data.put(payload)
-
-        except Exception:
-            logging.error(sys_exc(sys.exc_info()))
-
-    # Move units around the battle field (main thread)
-    while True:
-        for unit in units:
+    # Deploy units/bases
+    if target == "bases":
+        for base_id, config_base in config_bases.data.items():
             try:
-                unit.move()
-                payload = unit.payload_transactional()
+                base = Base(
+                    base_id,
+                    config_base,
+                )
+                payload = base.payload_non_transactional()
                 logging.info(payload)
                 if not dry_run:
-                    kafka.queue_moves.put(payload)
+                    kafka.queue_data.put(payload)
+            except Exception:
+                logging.error(sys_exc(sys.exc_info()))
+
+    else:  # troops / tanks
+        c = Coordinates()
+        start = Coordinate(
+            lat=config_deployment.start_latitude,
+            lon=config_deployment.start_longitude,
+        )
+        units = list()
+        for n in range(config_deployment.number_of_units):
+            try:
+                start = c.destination(
+                    start,
+                    config_deployment.bearing_angle_between_units,
+                    config_deployment.distance_between_units,
+                )
+                params["start_point"] = start
+                units.append(class_to_call(**params))
+                payload = units[n].payload_non_transactional()
+                logging.info(payload)
+                if not dry_run:
+                    kafka.queue_data.put(payload)
 
             except Exception:
                 logging.error(sys_exc(sys.exc_info()))
 
-        time.sleep(config_deployment.seconds_between_moves)
+        # Move units around the battle field (main thread)
+        while True:
+            for unit in units:
+                try:
+                    unit.move()
+                    payload = unit.payload_transactional()
+                    logging.info(payload)
+                    if not dry_run:
+                        kafka.queue_moves.put(payload)
+
+                except Exception:
+                    logging.error(sys_exc(sys.exc_info()))
+
+            time.sleep(config_deployment.seconds_between_moves)
+
+    if not dry_run:
+        logging.info("Waiting Kafka thread to finish")
+        kafka.stop_thread = True
+        kafka_thread.join()
+        logging.info("Kafka thread finished")

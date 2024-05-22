@@ -20,6 +20,7 @@ class ConfigTanksDeployment(BaseModel):
     bearing_angle_min: float
     bearing_angle_max: float
     distance_between_units: float
+    bearing_angle_between_units: float
     seconds_between_moves: float
     damage_probability_min: float
     damage_probability_max: float
@@ -41,6 +42,17 @@ class ConfigTanksModelsBase(BaseModel):
 
 class ConfigTanksModels(BaseModel):
     data: Dict[str, ConfigTanksModelsBase]
+
+
+class ConfigBasesBase(BaseModel):
+    name: str
+    type: str
+    latitude: float
+    longitude: float
+
+
+class ConfigBases(BaseModel):
+    data: Dict[str, ConfigBasesBase]
 
 
 class ConfigTroopsGeneral(BaseModel):
@@ -65,6 +77,7 @@ class ConfigTroopsDeployment(BaseModel):
     moving_speed_kph_min: float
     moving_speed_kph_max: float
     distance_between_units: float
+    bearing_angle_between_units: float
     seconds_between_moves: float
     ammunition_min: int
     ammunition_max: int
