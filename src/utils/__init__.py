@@ -99,12 +99,10 @@ class Kafka:
                     payload = self.queue_data.get()
                     topic = self.topic_data
                     serialiser = self.avro_serializer
-                    self.queue_data.task_done()
                 elif not self.queue_moves.empty():
                     payload = self.queue_moves.get()
                     topic = self.topic_move
                     serialiser = self.avro_serializer_move
-                    self.queue_moves.task_done()
                 else:
                     time.sleep(0.5)
                     if self.stop_thread:
