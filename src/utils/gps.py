@@ -1,11 +1,6 @@
 import math
 
-from pydantic import BaseModel
-
-
-class Coordinate(BaseModel):
-    lat: float
-    lon: float
+from utils.basemodels import Coordinate
 
 
 class Coordinates:

@@ -1,3 +1,9 @@
+# Kafka config
+kafka:
+  client_id: iot_battlefield_troops
+  topic_data: iot_battlefield_troops
+  topic_move: iot_battlefield_troops_moves
+
 # Tanks deployment
 deployment:
   number_of_units: 50

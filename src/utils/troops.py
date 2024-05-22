@@ -4,73 +4,16 @@ import hashlib
 
 from faker import Faker
 from typing import Dict
-from pydantic import BaseModel, field_validator
 
-from utils.gps import Coordinate, Coordinates
-
-
-class ConfigTroopsGeneral(BaseModel):
-    normal_pulse_rate_min: int
-    normal_pulse_rate_max: int
-    normal_body_temperature_min: float
-    normal_body_temperature_max: float
-    bmi_min: float
-    bmi_max: float
-    height_min: int
-    height_max: int
-    deceased_if_pulse_rate_under: float
-    deceased_if_body_temperature_under: float
-
-
-class ConfigTroopsDeployment(BaseModel):
-    number_of_units: int
-    start_latitude: float
-    start_longitude: float
-    bearing_angle_min: int
-    bearing_angle_max: int
-    moving_speed_kph_min: float
-    moving_speed_kph_max: float
-    distance_between_units: float
-    seconds_between_moves: float
-    ammunition_min: int
-    ammunition_max: int
-    ammunition_rps_min: float
-    ammunition_rps_max: float
-
-
-class ConfigTroopsBloodTypes(BaseModel):
-    data: Dict[str, float]
-
-
-class ConfigTroopsRanks(BaseModel):
-    data: Dict[str, float]
-
-
-class ConfigTroopsInjuryBase(BaseModel):
-    probability: float
-    death_minutes: float
-    pulse_rate_surge: float
-    body_temperature_drop: float
-    moving_speed_kph: float
-    able_to_use_ammo: bool
-
-
-class ConfigTroopsInjury(BaseModel):
-    data: Dict[str, ConfigTroopsInjuryBase]
-
-    @field_validator("data")
-    def add_no_injury(cls, data):
-        print(data.values())
-        sum_prob = sum([value.probability for value in data.values()])
-        data[None] = ConfigTroopsInjuryBase(
-            probability=(100 - sum_prob) if sum_prob < 100 else 50 * sum_prob,
-            death_minutes=0,
-            pulse_rate_surge=0,
-            body_temperature_drop=0,
-            moving_speed_kph=0,
-            able_to_use_ammo=True,
-        )
-        return data
+from utils.gps import Coordinates
+from utils.basemodels import (
+    Coordinate,
+    ConfigTroopsGeneral,
+    ConfigTroopsDeployment,
+    ConfigTroopsBloodTypes,
+    ConfigTroopsRanks,
+    ConfigTroopsInjury,
+)
 
 
 class Troop:
@@ -107,13 +50,16 @@ class Troop:
             )
             / 10000
         )
-        self.height = round((
-            random.randint(
-                int(config_general.height_min * 10000),
-                int(config_general.height_max * 10000),
-            )
-            / 10000
-        ),2)
+        self.height = round(
+            (
+                random.randint(
+                    int(config_general.height_min * 10000),
+                    int(config_general.height_max * 10000),
+                )
+                / 10000
+            ),
+            2,
+        )
         self.weight = round(bmi * (self.height / 100) ** 2, 2)
 
         self.ammo = (
@@ -137,20 +83,26 @@ class Troop:
             k=1,
         )[0]
 
-        self.body_temperature = round((
-            random.randint(
-                int(config_general.normal_body_temperature_min * 10000),
-                int(config_general.normal_body_temperature_max * 10000),
-            )
-            / 10000
-        ),2)
-        self.pulse_rate = round((
-            random.randint(
-                int(config_general.normal_pulse_rate_min * 10000),
-                int(config_general.normal_pulse_rate_max * 10000),
-            )
-            / 10000
-        ), 2)
+        self.body_temperature = round(
+            (
+                random.randint(
+                    int(config_general.normal_body_temperature_min * 10000),
+                    int(config_general.normal_body_temperature_max * 10000),
+                )
+                / 10000
+            ),
+            2,
+        )
+        self.pulse_rate = round(
+            (
+                random.randint(
+                    int(config_general.normal_pulse_rate_min * 10000),
+                    int(config_general.normal_pulse_rate_max * 10000),
+                )
+                / 10000
+            ),
+            2,
+        )
         self._bearing_angle = (
             random.randint(
                 int(config_deployment.bearing_angle_min * 10000),

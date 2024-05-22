@@ -1,3 +1,9 @@
+# Kafka config
+kafka:
+  client_id: iot_battlefield_tanks
+  topic_data: iot_battlefield_tanks
+  topic_move: iot_battlefield_tanks_moves
+
 # General configuration
 general:
   normal_pulse_rate_min: 60

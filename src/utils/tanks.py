@@ -2,40 +2,8 @@ import time
 import random
 import hashlib
 
-from typing import Dict
-from pydantic import BaseModel, field_validator
-
-from utils.gps import Coordinate, Coordinates
-
-
-class ConfigTanksDeployment(BaseModel):
-    number_of_units: int
-    start_latitude: float
-    start_longitude: float
-    bearing_angle_min: float
-    bearing_angle_max: float
-    distance_between_units: float
-    seconds_between_moves: float
-    damage_probability_min: float
-    damage_probability_max: float
-    damage_impact_min: float
-    damage_impact_max: float
-
-
-class ConfigTanksModelsBase(BaseModel):
-    proportion: float
-    moving_speed_kph_min: float
-    moving_speed_kph_max: float
-    ammunition_min: int
-    ammunition_max: int
-    ammunition_rpm_min: float
-    ammunition_rpm_max: float
-    damage_can_support_min: float
-    damage_can_support_max: float
-
-
-class ConfigTanksModels(BaseModel):
-    data: Dict[str, ConfigTanksModelsBase]
+from utils.gps import Coordinates
+from utils.basemodels import Coordinate, ConfigTanksDeployment, ConfigTanksModels
 
 
 class Tank:

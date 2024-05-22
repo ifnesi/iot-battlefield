@@ -4,7 +4,6 @@ import time
 import yaml
 import queue
 import logging
-from configparser import ConfigParser
 
 from dotenv import load_dotenv, find_dotenv
 from threading import Thread
@@ -18,14 +17,14 @@ from confluent_kafka.serialization import (
 from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroSerializer
 
-from utils.gps import Coordinate, Coordinates
-from utils.tanks import (
-    Tank,
+from utils.gps import Coordinates
+from utils.tanks import Tank
+from utils.troops import Troop
+from utils.basemodels import (
+    Coordinate,
+    ConfigKafkaUnits,
     ConfigTanksDeployment,
     ConfigTanksModels,
-)
-from utils.troops import (
-    Troop,
     ConfigTroopsGeneral,
     ConfigTroopsDeployment,
     ConfigTroopsRanks,
@@ -42,33 +41,26 @@ def sys_exc(exc_info) -> str:
 class Kafka:
     def __init__(
         self,
-        target_lower: str,
-        target_upper: str,
+        target: str,
+        kafka_config: dict,
+        unit_config: ConfigKafkaUnits,
     ) -> None:
-        # Kafka config
-        kafka_config = os.environ["KAFKA_CONFIG"]
-        kafka_client_id = os.environ[f"{target_upper}_KAFKA_CLIENT_ID"]
-        self.kafka_topic = os.environ[f"{target_upper}_KAFKA_TOPIC"]
-        self.kafka_topic_move = os.environ[f"{target_upper}_MOVE_KAFKA_TOPIC"]
-
-        config = ConfigParser()
-        config.read(kafka_config)
-
         # Producer
-        kafka_config = dict(config["kafka"])
-        kafka_config["client.id"] = kafka_client_id
-        self.producer = Producer(kafka_config)
+        kafka_config["kafka"]["client.id"] = unit_config.client_id
+        self.producer = Producer(kafka_config["kafka"])
+        self.topic_data = unit_config.topic_data
+        self.topic_move = unit_config.topic_move
 
         # Schema Registry
-        schema_registry_config = dict(config["schema-registry"])
+        schema_registry_config = dict(kafka_config["schema-registry"])
         schema_registry_client = SchemaRegistryClient(schema_registry_config)
         self.string_serializer = StringSerializer("utf_8")
-        with open(os.path.join("schemas", f"{target_lower}.avro"), "r") as f:
+        with open(os.path.join("schemas", f"{target}.avro"), "r") as f:
             self.avro_serializer = AvroSerializer(
                 schema_registry_client,
                 schema_str=f.read(),
             )
-        with open(os.path.join("schemas", f"{target_lower}_move.avro"), "r") as f:
+        with open(os.path.join("schemas", f"{target}_move.avro"), "r") as f:
             self.avro_serializer_move = AvroSerializer(
                 schema_registry_client,
                 schema_str=f.read(),
@@ -98,12 +90,12 @@ class Kafka:
                 payload = None
                 if not self.queue_data.empty():
                     payload = self.queue_data.get()
-                    topic = self.kafka_topic
+                    topic = self.topic_data
                     serialiser = self.avro_serializer
                     self.queue_data.task_done()
                 elif not self.queue_moves.empty():
                     payload = self.queue_moves.get()
-                    topic = self.kafka_topic_move
+                    topic = self.topic_move
                     serialiser = self.avro_serializer_move
                     self.queue_moves.task_done()
 
@@ -122,8 +114,6 @@ class Kafka:
                         on_delivery=self.delivery_report,
                     )
 
-                time.sleep(0.01)
-
             except Exception:
                 logging.error(sys_exc(sys.exc_info()))
 
@@ -134,15 +124,15 @@ class Kafka:
         logging.info("Flushing Kafka Producer")
         self.producer.flush()
 
-def deploy(
+
+def deploy_units(
     target: str,
+    dry_run: bool,
 ):
-    target_lower = target.lower()
-    target_upper = target.upper()
 
     # Screen log handler
     logging.basicConfig(
-        format=f"[{target_lower}] %(asctime)s.%(msecs)03d [%(levelname)s]: %(message)s",
+        format=f"[{target}] %(asctime)s.%(msecs)03d [%(levelname)s]: %(message)s",
         level=logging.INFO,
         datefmt="%Y-%m-%d %H:%M:%S",
     )
@@ -150,18 +140,13 @@ def deploy(
     # Load env variables
     load_dotenv(find_dotenv())
 
-    kafka = Kafka(
-        target_lower,
-        target_upper,
-    )
-
     # Configuration
-    config_file = os.environ.get(f"{target_upper}_CONFIG")
-    logging.info(f"Loading {target_lower} configuration file: {config_file}")
+    config_file = os.environ.get(f"{target.upper()}_CONFIG")
+    logging.info(f"Loading {target} configuration file: {config_file}")
     with open(config_file, "r") as f:
         config = yaml.safe_load(f)
 
-    if target_lower == "tanks":
+    if target == "tanks":
         config_deployment = ConfigTanksDeployment(**config["deployment"])
         config_models = ConfigTanksModels(data=config["models"])
         class_to_call = Tank
@@ -170,7 +155,7 @@ def deploy(
             "config_deployment": config_deployment,
             "config_models": config_models,
         }
-    else:
+    else:  # troops
         config_general = ConfigTroopsGeneral(**config["general"])
         config_deployment = ConfigTroopsDeployment(**config["deployment"])
         config_ranks = ConfigTroopsRanks(data=config["ranks"])
@@ -186,12 +171,29 @@ def deploy(
             "config_injury": config_injury,
         }
 
-    # Deploy
+    # Kafka
+    if not dry_run:
+        kafka_config_file = os.environ.get("KAFKA_CONFIG")
+        with open(kafka_config_file, "r") as f:
+            kafka_config = yaml.safe_load(f)
+        kafka = Kafka(
+            target,
+            kafka_config,
+            ConfigKafkaUnits(**config["kafka"]),
+        )
+
+        # Start thread to process queues
+        Thread(
+            target=kafka.process_queues,
+        ).start()
+
+    # Deploy units
+    c = Coordinates()
     start = Coordinate(
         lat=config_deployment.start_latitude,
         lon=config_deployment.start_longitude,
     )
-    c = Coordinates()
+
     units = list()
     for n in range(config_deployment.number_of_units):
         try:
@@ -202,24 +204,23 @@ def deploy(
             )
             params["start_point"] = start
             units.append(class_to_call(**params))
-            kafka.queue_data.put(units[n].payload_non_transactional())
-            logging.info(units[n].payload_non_transactional())
+            payload = units[n].payload_non_transactional()
+            logging.info(payload)
+            if not dry_run:
+                kafka.queue_data.put(payload)
 
         except Exception:
             logging.error(sys_exc(sys.exc_info()))
-
-    # Start thread to process queues
-    Thread(
-        target=kafka.process_queues,
-    ).start()
 
     # Move units around the battle field (main thread)
     while True:
         for unit in units:
             try:
                 unit.move()
-                kafka.queue_moves.put(unit.payload_transactional())
-                logging.info(unit.payload_transactional())
+                payload = unit.payload_transactional()
+                logging.info(payload)
+                if not dry_run:
+                    kafka.queue_moves.put(payload)
 
             except Exception:
                 logging.error(sys_exc(sys.exc_info()))
