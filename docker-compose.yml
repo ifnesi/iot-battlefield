@@ -87,6 +87,7 @@ services:
     image: confluentinc/cp-ksqldb-server:$CONFLUENT_PLATFORM_VERSION
     hostname: ksqldb-server
     container_name: ksqldb-server
+    platform: $PLATFORM
     depends_on:
       - broker
       - schema-registry
@@ -107,7 +108,9 @@ services:
 
   ksqldb-cli:
     image: confluentinc/cp-ksqldb-cli:$CONFLUENT_PLATFORM_VERSION
+    hostname: ksqldb-cli
     container_name: ksqldb-cli
+    platform: $PLATFORM
     depends_on:
       - broker
       - ksqldb-server
@@ -117,6 +120,9 @@ services:
 # Kafka Connect ------------------------------------------------------------------------
   connect-1:
     image: cnfldemos/cp-server-connect-datagen:$CONFLUENT_DATAGEN_VERSION-$CONFLUENT_PLATFORM_VERSION
+    hostname: connect-1
+    container_name: connect-1
+    platform: $PLATFORM
     ports:
       - 8083:8083
     environment:
@@ -149,7 +155,7 @@ services:
       - |
         echo "Installing Connector"
         confluent-hub install --no-prompt /tmp/$SPLUNK_CONNECTOR_ZIP
-        echo "Launching Kafka Connect worker"
+        confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:$CONFLUENT_JDBC_SINK_VERSION
         /etc/confluent/docker/run & 
         sleep infinity
 
@@ -162,3 +168,35 @@ services:
       - broker
       - schema-registry
       - ksqldb-server
+
+  # PostgreSQL
+  postgres:
+    image: debezium/postgres:$POSTGRESQL_VERSION
+    hostname: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+    restart: always
+    depends_on:
+      - broker
+      - schema-registry
+      - ksqldb-server
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    hostname: pgadmin
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+       - ./src/pgadmin:/var/lib/pgadmin
+    ports:
+      - 5050:80
+    restart: always
+    depends_on:
+      - postgres
