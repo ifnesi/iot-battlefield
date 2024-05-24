@@ -6,7 +6,7 @@ kafka:
 
 # Front Line Command units
 deployment:
-  seconds_between_moves: 1
+  seconds_between_moves: 30
   locations:
     Luhansk:
       latitude: 48.5456
