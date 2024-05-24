@@ -1,0 +1,10 @@
+{
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "topics": "$TROOPS.kafka.topic_data-injuried,$TROOPS.kafka.topic_data-deceased,$TANKS.kafka.topic_data-destroyed",
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres?verifyServerCertificate=false&useSSL=false&requireSSL=false",
+    "connection.user": "postgres",
+    "connection.password": "postgres",
+    "insert.mode": "insert",
+    "auto.create": "true",
+    "tasks.max": "1"
+}

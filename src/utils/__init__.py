@@ -228,6 +228,7 @@ def deploy_units(
             lon=config_deployment.start_longitude,
         )
         units = list()
+        stop_reporting = dict()
         for n in range(config_deployment.number_of_units):
             try:
                 start = c.destination(
@@ -240,6 +241,7 @@ def deploy_units(
                 payload = units[n].payload_non_transactional()
                 logging.info(payload)
                 if not dry_run:
+                    stop_reporting[payload["id"]] = False
                     kafka.queue_data.put(payload)
 
             except Exception:
@@ -251,9 +253,13 @@ def deploy_units(
                 try:
                     unit.move()
                     payload = unit.payload_transactional()
-                    logging.info(payload)
-                    if not dry_run:
-                        kafka.queue_moves.put(payload)
+                    if not stop_reporting[payload["id"]]:
+                        logging.info(payload)
+                        if not dry_run:
+                            kafka.queue_moves.put(payload)
+                            stop_reporting[payload["id"]] = payload.get(
+                                "deceased", False
+                            ) or payload.get("destroyed", False)
 
                 except Exception:
                     logging.error(sys_exc(sys.exc_info()))

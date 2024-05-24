@@ -28,7 +28,9 @@ class Tank:
         )[0]
         self._model_config = config_models.data[self.model]
 
-        _reference = f"{start_point.lat}_{start_point.lon}_{self.model}"
+        _reference = (
+            f"{start_point.lat}_{start_point.lon}_{self.model}_{random.random()}"
+        )
         self.id = f"tank_{hashlib.sha256(_reference.encode('utf-8')).hexdigest()[:12]}"
 
         self._supported_damage = (
