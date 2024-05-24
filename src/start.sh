@@ -55,4 +55,5 @@ exec python cp_provisioning.py &
 sleep 60
 exec python deployment.py --target=bases &
 exec python deployment.py --target=tanks &
-exec python deployment.py --target=troops
+exec python deployment.py --target=troops &
+exec python deployment.py --target=flc

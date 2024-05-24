@@ -8,6 +8,7 @@ if __name__ == "__main__":
         "tanks",
         "troops",
         "bases",
+        "flc",
     ]
     parser = argparse.ArgumentParser(description="Python emulator - IoT Battlefield")
     parser.add_argument(

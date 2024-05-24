@@ -21,6 +21,7 @@ from utils.gps import Coordinates
 from utils.bases import Base
 from utils.tanks import Tank
 from utils.troops import Troop
+from utils.flc import FLC
 from utils.basemodels import (
     Coordinate,
     ConfigKafkaUnits,
@@ -32,6 +33,7 @@ from utils.basemodels import (
     ConfigTroopsBloodTypes,
     ConfigTroopsInjury,
     ConfigBases,
+    ConfigFLCDeployment,
 )
 
 
@@ -186,6 +188,9 @@ def deploy_units(
     elif target == "bases":
         config_bases = ConfigBases(data=config["bases"])
 
+    elif target == "flc":
+        config_lfc = ConfigFLCDeployment(**config["deployment"])
+
     else:
         raise Exception(f"Invalid target '{target}'")
 
@@ -220,6 +225,38 @@ def deploy_units(
                     kafka.queue_data.put(payload)
             except Exception:
                 logging.error(sys_exc(sys.exc_info()))
+
+    elif target == "flc":
+        lfcs = list()
+        for location, config in config_lfc.locations.items():
+            try:
+                lfc = FLC(
+                    location,
+                    config,
+                    config_lfc.seconds_between_moves,
+                )
+                lfcs.append(lfc)
+                payload = lfc.payload_non_transactional()
+                logging.info(payload)
+                if not dry_run:
+                    kafka.queue_data.put(payload)
+            except Exception:
+                logging.error(sys_exc(sys.exc_info()))
+
+        # Emulate supply levels (main thread)
+        while True:
+            for lfc in lfcs:
+                try:
+                    lfc.move()
+                    payload = lfc.payload_transactional()
+                    logging.info(payload)
+                    if not dry_run:
+                        kafka.queue_moves.put(payload)
+
+                except Exception:
+                    logging.error(sys_exc(sys.exc_info()))
+
+            time.sleep(lfc._seconds_between_moves)
 
     else:  # troops / tanks
         c = Coordinates()

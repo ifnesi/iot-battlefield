@@ -117,3 +117,25 @@ class ConfigTroopsInjury(BaseModel):
             able_to_use_ammo=True,
         )
         return data
+
+
+class ConfigFLCDeploymentBase(BaseModel):
+    latitude: float
+    longitude: float
+    food_level_min: float
+    food_level_max: float
+    food_level_var_min: float
+    food_level_var_max: float
+    ammunition_level_min: float
+    ammunition_level_max: float
+    ammunition_level_var_min: float
+    ammunition_level_var_max: float
+    health_level_min: float
+    health_level_max: float
+    health_level_var_min: float
+    health_level_var_max: float
+
+
+class ConfigFLCDeployment(BaseModel):
+    seconds_between_moves: float
+    locations: Dict[str, ConfigFLCDeploymentBase]

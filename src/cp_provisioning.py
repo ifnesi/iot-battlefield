@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     # Load YAML config
     yaml_config = dict()
-    for target in ["TROOPS", "TANKS", "BASES"]:
+    for target in ["TROOPS", "TANKS", "BASES", "FLC"]:
         config_file = os.environ.get(f"{target}_CONFIG")
         with open(config_file, "r") as f:
             config = yaml.safe_load(f)
@@ -61,14 +61,32 @@ if __name__ == "__main__":
 
     # Create Topics/Schemas
     topics = {
-        yaml_config["BASES.kafka.topic_data"]: os.path.join("schemas", "bases.avro"),
-        yaml_config["TROOPS.kafka.topic_data"]: os.path.join("schemas", "troops.avro"),
+        yaml_config["BASES.kafka.topic_data"]: os.path.join(
+            "schemas",
+            "bases.avro",
+        ),
+        yaml_config["TROOPS.kafka.topic_data"]: os.path.join(
+            "schemas",
+            "troops.avro",
+        ),
         yaml_config["TROOPS.kafka.topic_move"]: os.path.join(
             "schemas", "troops_move.avro"
         ),
-        yaml_config["TANKS.kafka.topic_data"]: os.path.join("schemas", "tanks.avro"),
+        yaml_config["TANKS.kafka.topic_data"]: os.path.join(
+            "schemas",
+            "tanks.avro",
+        ),
         yaml_config["TANKS.kafka.topic_move"]: os.path.join(
-            "schemas", "tanks_move.avro"
+            "schemas",
+            "tanks_move.avro",
+        ),
+        yaml_config["FLC.kafka.topic_data"]: os.path.join(
+            "schemas",
+            "flc.avro",
+        ),
+        yaml_config["FLC.kafka.topic_move"]: os.path.join(
+            "schemas",
+            "flc_move.avro",
         ),
     }
 
@@ -97,7 +115,6 @@ if __name__ == "__main__":
             topics_list = kafka_admin.list_topics().topics
             if topic in topics_list.keys():
                 break
-
 
     # ksqlDB
     logging.info("Submitting ksqlDB statements\n")

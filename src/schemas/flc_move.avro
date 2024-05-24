@@ -1,0 +1,28 @@
+{
+    "name": "flc_move",
+    "namespace": "iot_battlefield.confluent.io",
+    "type": "record",
+    "fields": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "food",
+            "type": "int"
+        },
+        {
+            "name": "ammo",
+            "type": "int"
+        },
+        {
+            "name": "health",
+            "type": "int"
+        },
+        {
+            "name": "timestamp",
+            "type": "long",
+            "logicalType": "time-millis"
+        }
+    ]
+}
