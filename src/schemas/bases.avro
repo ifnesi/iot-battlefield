@@ -1,5 +1,5 @@
 {
-    "name": "tanks",
+    "name": "bases",
     "namespace": "iot_battlefield.confluent.io",
     "type": "record",
     "fields": [

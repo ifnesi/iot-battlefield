@@ -20,8 +20,8 @@ general:
 # Troops deployment
 deployment:
   number_of_units: 100
-  start_latitude: 50.67615541
-  start_longitude: 4.40630927
+  start_latitude: 48.5456
+  start_longitude: 39.3423
   bearing_angle_min: -5
   bearing_angle_max: 5
   moving_speed_kph_min: 4

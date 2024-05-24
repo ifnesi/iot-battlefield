@@ -7,8 +7,8 @@ kafka:
 # Tanks deployment
 deployment:
   number_of_units: 50
-  start_latitude: 50.67615541
-  start_longitude: 4.40630927
+  start_latitude: 48.5456
+  start_longitude: 39.3423
   bearing_angle_min: -5
   bearing_angle_max: 5
   distance_between_units: 20

@@ -9,20 +9,20 @@ bases:
   base_01:
     name: Fort Arsenal
     type: ammunition
-    latitude: 50.67609024
-    longitude: 4.38077882
+    latitude: 48.54488969187439
+    longitude: 39.33393150574515
   base_02:
     name: Provision Point
     type: food
-    latitude: 50.66881689
-    longitude: 4.37875479
+    latitude: 48.554804290813244
+    longitude: 39.34616237818907
   base_03:
     name: Equipment Depot
     type: equipment
-    latitude: 50.67855992
-    longitude: 4.38635565
+    latitude: 48.53889453648839
+    longitude: 39.3488231293874
   base_04:
     name: Medicor
     type: medical
-    latitude: 50.6860193
-    longitude: 4.36845399
+    latitude: 48.53770110328317
+    longitude: 39.359036980761616
