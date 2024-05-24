@@ -28,7 +28,7 @@ deployment:
   moving_speed_kph_max: 8
   distance_between_units: 5
   bearing_angle_between_units: 90
-  seconds_between_moves: 1
+  seconds_between_moves: 30
   ammunition_min: 250
   ammunition_max: 500
   ammunition_rps_min: 1

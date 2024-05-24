@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -m
+source .env
 
 function logging() {
   TIMESTAMP=`date "+%Y-%m-%d %H:%M:%S.000"`
@@ -46,17 +47,12 @@ do
 done
 sleep 1
 
-# Splunk HEC Sink Connector
-source .env
-logging "Starting Splunk HEC sink connector"
-curl -i -X PUT http://connect-1:8083/connectors/splunk_hec_sink/config \
-     -H "Content-Type: application/json" \
-     -d @$SPLUNK_CONFIG_FILE
-sleep 5
-echo ""
-curl -s http://connect-1:8083/connectors/splunk_hec_sink/status
-sleep 1
+# Create topics, ksqlDB tables/streams and connectors
+sleep 3
+exec python cp_provisioning.py &
 
+# Start emulator
+sleep 60
 exec python deployment.py --target=bases &
 exec python deployment.py --target=tanks &
 exec python deployment.py --target=troops

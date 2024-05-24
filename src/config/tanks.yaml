@@ -13,7 +13,7 @@ deployment:
   bearing_angle_max: 5
   distance_between_units: 20
   bearing_angle_between_units: -90
-  seconds_between_moves: 1
+  seconds_between_moves: 30
   damage_probability_min: 1
   damage_probability_max: 5
   damage_impact_min: 1
