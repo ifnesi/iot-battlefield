@@ -4,6 +4,8 @@
 *.pyc
 __pycache__/
 
+src/pgadmin/sessions/*
+
 connectors/*
 !connectors/*.zip
 !connectors/trust-store
