@@ -8,10 +8,12 @@ kafka:
 general:
   normal_pulse_rate_min: 60
   normal_pulse_rate_max: 120
+  normal_pulse_rate_var_mean: 0
+  normal_pulse_rate_var_stdev: 3
   normal_body_temperature_min: 36.1
   normal_body_temperature_max: 37.2
-  bmi_min: 20
-  bmi_max: 29
+  bmi_min: 22
+  bmi_max: 27
   height_min: 155
   height_max: 200
   deceased_if_pulse_rate_under: 20

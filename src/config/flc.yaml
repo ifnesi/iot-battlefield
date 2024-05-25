@@ -13,163 +13,163 @@ deployment:
       longitude: 39.3423
       food_level_min: 30
       food_level_max: 65
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 30
       ammunition_level_max: 68
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 30
       health_level_max: 72
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     Mariupol:
       latitude: 47.0821
       longitude: 37.5152
       food_level_min: 34
       food_level_max: 65
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 34
       ammunition_level_max: 66
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 34
       health_level_max: 64
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     Kyiv:
       latitude: 50.4501
       longitude: 30.5233
       food_level_min: 66
       food_level_max: 97
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 66
       ammunition_level_max: 99
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 66
       health_level_max: 98
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     Uman:
       latitude: 48.7364
       longitude: 30.2153
       food_level_min: 66
       food_level_max: 97
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 66
       ammunition_level_max: 99
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 66
       health_level_max: 98
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     Cherkasy:
       latitude: 49.4334
       longitude: 32.1445
       food_level_min: 66
       food_level_max: 97
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 66
       ammunition_level_max: 99
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 66
       health_level_max: 98
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     Sumy:
       latitude: 50.9119
       longitude: 34.8028
       food_level_min: 66
       food_level_max: 97
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 66
       ammunition_level_max: 99
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 66
       health_level_max: 98
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     Kharkiv:
       latitude: 49.9511
       longitude: 36.3103
       food_level_min: 66
       food_level_max: 97
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 66
       ammunition_level_max: 99
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 66
       health_level_max: 98
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     Zaprizhzhia:
       latitude: 47.8501
       longitude: 35.1175
       food_level_min: 66
       food_level_max: 97
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 66
       ammunition_level_max: 99
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 66
       health_level_max: 98
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     Svatove:
       latitude: 49.4042
       longitude: 38.1559
       food_level_min: 66
       food_level_max: 97
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 66
       ammunition_level_max: 99
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 66
       health_level_max: 98
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     Shoshka:
       latitude: 51.8964
       longitude: 33.4458
       food_level_min: 66
       food_level_max: 97
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 66
       ammunition_level_max: 99
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 66
       health_level_max: 98
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
     London:
       latitude: 51.5072
       longitude: 0.1276
       food_level_min: 66
       food_level_max: 97
-      food_level_var_min: -5
-      food_level_var_max: 5
+      food_level_var_mean: 0
+      food_level_var_stdev: 3
       ammunition_level_min: 66
       ammunition_level_max: 99
-      ammunition_level_var_min: -5
-      ammunition_level_var_max: 5
+      ammunition_level_var_mean: 0
+      ammunition_level_var_stdev: 3
       health_level_min: 66
       health_level_max: 98
-      health_level_var_min: -5
-      health_level_var_max: 5
+      health_level_var_mean: 0
+      health_level_var_stdev: 3
