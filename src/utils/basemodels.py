@@ -44,17 +44,6 @@ class ConfigTanksModels(BaseModel):
     data: Dict[str, ConfigTanksModelsBase]
 
 
-class ConfigBasesBase(BaseModel):
-    name: str
-    type: str
-    latitude: float
-    longitude: float
-
-
-class ConfigBases(BaseModel):
-    data: Dict[str, ConfigBasesBase]
-
-
 class ConfigTroopsGeneral(BaseModel):
     normal_pulse_rate_min: int
     normal_pulse_rate_max: int

@@ -17,11 +17,10 @@ from confluent_kafka.serialization import (
 from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroSerializer
 
+from utils.flc import FLC
 from utils.gps import Coordinates
-from utils.bases import Base
 from utils.tanks import Tank
 from utils.troops import Troop
-from utils.flc import FLC
 from utils.basemodels import (
     Coordinate,
     ConfigKafkaUnits,
@@ -32,7 +31,6 @@ from utils.basemodels import (
     ConfigTroopsRanks,
     ConfigTroopsBloodTypes,
     ConfigTroopsInjury,
-    ConfigBases,
     ConfigFLCDeployment,
 )
 
@@ -54,7 +52,6 @@ class Kafka:
         self.producer = Producer(kafka_config["kafka"])
         self.topic_data = unit_config.topic_data
         self.topic_move = unit_config.topic_move
-        self.stop_thread = False
 
         # Data queues
         self.queue_data = queue.Queue()
@@ -92,7 +89,6 @@ class Kafka:
             )
 
     def process_queues(self) -> None:
-        exit_if_zero = 60
         while True:
             try:
                 payload = None
@@ -107,10 +103,6 @@ class Kafka:
                     serialiser = self.avro_serializer_move
                 else:
                     time.sleep(0.5)
-                    if self.stop_thread:
-                        exit_if_zero -= 1
-                    if exit_if_zero == 0:
-                        break
 
                 if payload is not None:
                     self.producer.poll(0)
@@ -185,9 +177,6 @@ def deploy_units(
             "config_injury": config_injury,
         }
 
-    elif target == "bases":
-        config_bases = ConfigBases(data=config["bases"])
-
     elif target == "flc":
         config_lfc = ConfigFLCDeployment(**config["deployment"])
 
@@ -211,22 +200,8 @@ def deploy_units(
         )
         kafka_thread.start()
 
-    # Deploy units/bases
-    if target == "bases":
-        for base_id, config_base in config_bases.data.items():
-            try:
-                base = Base(
-                    base_id,
-                    config_base,
-                )
-                payload = base.payload_non_transactional()
-                logging.info(payload)
-                if not dry_run:
-                    kafka.queue_data.put(payload)
-            except Exception:
-                logging.error(sys_exc(sys.exc_info()))
-
-    elif target == "flc":
+    # Deploy units
+    if target == "flc":
         lfcs = list()
         for location, config in config_lfc.locations.items():
             try:
@@ -302,9 +277,3 @@ def deploy_units(
                     logging.error(sys_exc(sys.exc_info()))
 
             time.sleep(config_deployment.seconds_between_moves)
-
-    if not dry_run:
-        logging.info("Waiting Kafka thread to finish")
-        kafka.stop_thread = True
-        kafka_thread.join()
-        logging.info("Kafka thread finished")

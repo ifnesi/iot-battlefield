@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     # Load YAML config
     yaml_config = dict()
-    for target in ["TROOPS", "TANKS", "BASES", "FLC"]:
+    for target in ["TROOPS", "TANKS", "FLC"]:
         config_file = os.environ.get(f"{target}_CONFIG")
         with open(config_file, "r") as f:
             config = yaml.safe_load(f)
@@ -61,10 +61,6 @@ if __name__ == "__main__":
 
     # Create Topics/Schemas
     topics = {
-        yaml_config["BASES.kafka.topic_data"]: os.path.join(
-            "schemas",
-            "bases.avro",
-        ),
         yaml_config["TROOPS.kafka.topic_data"]: os.path.join(
             "schemas",
             "troops.avro",

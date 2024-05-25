@@ -5,7 +5,7 @@
     "key.converter.schema.registry.url": "http://schema-registry:8081",
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter.schema.registry.url": "http://schema-registry:8081",
-    "topics": "$BASES.kafka.topic_data,$TROOPS.kafka.topic_data-joined,$TANKS.kafka.topic_data-joined,$FLC.kafka.topic_data-joined",
+    "topics": "$TROOPS.kafka.topic_data-joined,$TANKS.kafka.topic_data-joined,$FLC.kafka.topic_data-joined",
     "splunk.hec.token": "*********",
     "splunk.hec.uri": "https://hec1.splunk.com:8088,https://hec2.splunk.com:8088,https://hec3.splunk.com:8088",
     "splunk.hec.raw": "true",
