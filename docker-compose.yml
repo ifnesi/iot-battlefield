@@ -81,7 +81,6 @@ services:
       CONTROL_CENTER_CONNECT_C1_CLUSTER: http://connect-1:8083
       PORT: 9021
 
-
   # ksqlDB Cluster
   ksqldb-server:
     image: confluentinc/cp-ksqldb-server:$CONFLUENT_PLATFORM_VERSION
