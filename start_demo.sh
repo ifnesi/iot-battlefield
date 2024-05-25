@@ -53,6 +53,7 @@ done
 # Open browser with C3 and PGAdmin consoles
 python3 -m webbrowser -t "http://localhost:5050"
 python3 -m webbrowser -t "http://localhost:9021/clusters"
+python3 -m webbrowser -t "http://localhost:5601"
 
 logging "Demo successfully started"
 

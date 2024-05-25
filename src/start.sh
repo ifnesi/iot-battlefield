@@ -50,9 +50,16 @@ sleep 1
 # Create topics, ksqlDB tables/streams and connectors
 sleep 3
 exec python cp_provisioning.py &
+sleep 90
+
+# Kibana Dashboard
+logging "Importing Kibana Index/Dashboard"
+curl -X POST "http://kibana:5601/api/saved_objects/_import?createNewCopies=true" -H "kbn-xsrf: true" --form file=@$KIBANA_DASHBOARD
+# POST http://localhost:5601/api/saved_objects/_export
+# Body: {"type": "dashboard", "includeReferencesDeep": true}
 
 # Start emulator
-sleep 90
+sleep 10
 exec python deployment.py --target=tanks &
 exec python deployment.py --target=troops &
 exec python deployment.py --target=flc

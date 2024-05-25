@@ -1,0 +1,14 @@
+{
+    "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+    "connection.url": "http://elasticsearch:9200",
+    "key.ignore": "true",
+    "topics": "$TROOPS.kafka.topic_data-joined,$TANKS.kafka.topic_data-joined,$FLC.kafka.topic_data-joined",
+    "drop.invalid.message": "true",
+    "behavior.on.null.values": "IGNORE",
+    "behavior.on.malformed.documents": "ignore",
+    "write.method": "insert",
+    "data.stream.dataset": "iot",
+    "data.stream.type": "METRICS",
+    "data.stream.timestamp.field": "timestamp",
+    "tasks.max": "1"
+}
