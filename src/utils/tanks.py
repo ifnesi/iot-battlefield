@@ -113,5 +113,6 @@ class Tank:
                 if self.damage > self._supported_damage:
                     self.damage = self._supported_damage
                     self.destroyed = True
+                    self.speed = 0
 
         self.timestamp = timestamp

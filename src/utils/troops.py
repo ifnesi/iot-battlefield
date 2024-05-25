@@ -109,7 +109,7 @@ class Troop:
             "injury": self.injury,
             "injury_time": None
             if self.injury_time is None
-            else int(1000 * self.injury_time),
+            else format_timestamp(self.injury_time),
             "deceased": self.deceased,
             "timestamp": format_timestamp(self.timestamp),
         }
