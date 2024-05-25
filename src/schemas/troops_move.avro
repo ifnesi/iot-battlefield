@@ -21,7 +21,7 @@
         },
         {
             "name": "pulse_rate",
-            "type": "double"
+            "type": "int"
         },
         {
             "name": "ammo",

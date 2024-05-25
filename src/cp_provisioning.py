@@ -11,6 +11,8 @@ from dotenv import load_dotenv, find_dotenv
 from confluent_kafka.admin import AdminClient, NewTopic
 from confluent_kafka.schema_registry import SchemaRegistryClient, Schema
 
+from utils._utils import set_log_handler
+
 
 def flat_file(
     file: str,
@@ -37,13 +39,9 @@ def repl_env_vars(
 
 
 if __name__ == "__main__":
-    FILE_APP = os.path.splitext(os.path.split(__file__)[-1])[0]
     # Screen log handler
-    logging.basicConfig(
-        format=f"[{FILE_APP}] %(asctime)s.%(msecs)03d [%(levelname)s]: %(message)s",
-        level=logging.INFO,
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
+    FILE_APP = os.path.splitext(os.path.split(__file__)[-1])[0]
+    set_log_handler(FILE_APP)
 
     # Load env variables
     load_dotenv(find_dotenv())
@@ -166,7 +164,7 @@ if __name__ == "__main__":
                     json=json.loads(repl_env_vars(f.read(), yaml_config)),
                 )
 
-                if response.status_code == 200:
+                if response.status_code in [200, 201]:
                     log = logging.info
                     status_code = response.status_code
                     response = json.dumps(response.json(), indent=3)
