@@ -20,7 +20,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--dry-run",
-        help="Start simulation without publishing it to Kafka",
+        help="Start emulator without publishing to Kafka",
         dest="dry_run",
         action="store_true",
     )
