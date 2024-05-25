@@ -1,20 +1,21 @@
 CREATE STREAM IF NOT EXISTS `$TROOPS.kafka.topic_data-injuried` AS
 SELECT
-    T.id,
-    T.name,
-    T.rank,
-    T.height,
-    T.weight,
-    T.blood_type,
-    T.lat,
-    T.lon,
-    T.body_temperature,
-    T.pulse_rate,
-    T.ammo,
-    T.injury,
-    T.injury_time,
-    T.deceased,
-    T.timestamp AS `TIMESTAMP`
-FROM `$TROOPS.kafka.topic_data-joined` AS T
+    `id`,
+    `key`,
+    `name`,
+    `rank`,
+    `height`,
+    `weight`,
+    `blood_type`,
+    `lat`,
+    `lon`,
+    `body_temperature`,
+    `pulse_rate`,
+    `ammo`,
+    `injury`,
+    `injury_time`,
+    `deceased`,
+    `timestamp`
+FROM `iot_battlefield_troops-joined`
 WHERE
-    T.injury IS NOT NULL;
+    `injury` IS NOT NULL;
