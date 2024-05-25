@@ -1,8 +1,8 @@
 import time
-import random
 import hashlib
 
-from utils.basemodels import ConfigFLCDeploymentBase
+from utils._utils import rand_range_float, random_gauss, format_timestamp
+from utils._basemodels import ConfigFLCDeploymentBase
 
 
 class FLC:
@@ -19,28 +19,19 @@ class FLC:
 
         self._config_flc = config_flc
 
-        self.ammo = (
-            random.randint(
-                int(config_flc.ammunition_level_min * 10000),
-                int(config_flc.ammunition_level_max * 10000),
-            )
-            / 10000
+        self.ammo = rand_range_float(
+            config_flc.ammunition_level_min,
+            config_flc.ammunition_level_max,
         )
 
-        self.health = (
-            random.randint(
-                int(config_flc.health_level_min * 10000),
-                int(config_flc.health_level_max * 10000),
-            )
-            / 10000
+        self.health = rand_range_float(
+            config_flc.health_level_min,
+            config_flc.health_level_max,
         )
 
-        self.food = (
-            random.randint(
-                int(config_flc.food_level_min * 10000),
-                int(config_flc.food_level_max * 10000),
-            )
-            / 10000
+        self.food = rand_range_float(
+            config_flc.food_level_min,
+            config_flc.food_level_max,
         )
 
     def payload_non_transactional(self) -> dict:
@@ -49,7 +40,7 @@ class FLC:
             "city": self.city,
             "lat": self._config_flc.latitude,
             "lon": self._config_flc.longitude,
-            "timestamp": int(1000 * self.timestamp),
+            "timestamp": format_timestamp(self.timestamp),
         }
 
     def payload_transactional(self) -> dict:
@@ -58,53 +49,32 @@ class FLC:
             "ammo": int(self.ammo),
             "health": int(self.health),
             "food": int(self.food),
-            "timestamp": int(1000 * self.timestamp),
+            "timestamp": format_timestamp(self.timestamp),
         }
 
     def move(self) -> None:
         self.timestamp = time.time()
 
-        self.ammo += (
-            random.randint(
-                int(self._config_flc.ammunition_level_var_min * 10000),
-                int(self._config_flc.ammunition_level_var_max * 10000),
-            )
-            / 10000
-        )
-        self.ammo = min(
-            max(
-                self.ammo,
-                self._config_flc.ammunition_level_min,
-            ),
+        self.ammo = random_gauss(
+            self.ammo,
+            self._config_flc.ammunition_level_var_mean,
+            self._config_flc.ammunition_level_var_stdev,
+            self._config_flc.ammunition_level_min,
             self._config_flc.ammunition_level_max,
         )
 
-        self.health += (
-            random.randint(
-                int(self._config_flc.health_level_var_min * 10000),
-                int(self._config_flc.health_level_var_max * 10000),
-            )
-            / 10000
-        )
-        self.health = min(
-            max(
-                self.health,
-                self._config_flc.health_level_min,
-            ),
+        self.health = random_gauss(
+            self.health,
+            self._config_flc.health_level_var_mean,
+            self._config_flc.health_level_var_stdev,
+            self._config_flc.health_level_min,
             self._config_flc.health_level_max,
         )
 
-        self.food += (
-            random.randint(
-                int(self._config_flc.food_level_var_min * 10000),
-                int(self._config_flc.food_level_var_max * 10000),
-            )
-            / 10000
-        )
-        self.food = min(
-            max(
-                self.food,
-                self._config_flc.food_level_min,
-            ),
+        self.food = random_gauss(
+            self.food,
+            self._config_flc.food_level_var_mean,
+            self._config_flc.food_level_var_stdev,
+            self._config_flc.food_level_min,
             self._config_flc.food_level_max,
         )

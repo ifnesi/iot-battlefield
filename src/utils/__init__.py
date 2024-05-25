@@ -17,11 +17,12 @@ from confluent_kafka.serialization import (
 from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroSerializer
 
+from utils._utils import sys_exc, set_log_handler
 from utils.flc import FLC
-from utils.gps import Coordinates
 from utils.tanks import Tank
+from utils._utils import Coordinates
 from utils.troops import Troop
-from utils.basemodels import (
+from utils._basemodels import (
     Coordinate,
     ConfigKafkaUnits,
     ConfigTanksDeployment,
@@ -35,11 +36,7 @@ from utils.basemodels import (
 )
 
 
-def sys_exc(exc_info) -> str:
-    exc_type, exc_obj, exc_tb = exc_info
-    return f"{exc_type} | {exc_tb.tb_lineno} | {exc_obj}"
-
-
+## Classes
 class Kafka:
     def __init__(
         self,
@@ -136,11 +133,7 @@ def deploy_units(
 ):
 
     # Screen log handler
-    logging.basicConfig(
-        format=f"[{target}] %(asctime)s.%(msecs)03d [%(levelname)s]: %(message)s",
-        level=logging.INFO,
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
+    set_log_handler(target)
 
     # Load env variables
     load_dotenv(find_dotenv())
