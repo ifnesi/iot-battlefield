@@ -27,8 +27,8 @@ models:
     moving_speed_kph_max: 40
     ammunition_min: 250
     ammunition_max: 500
-    ammunition_rpm_min: 0.01
-    ammunition_rpm_max: 0.05
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 3
     damage_can_support_min: 50
     damage_can_support_max: 75
   Warrior:
@@ -37,8 +37,8 @@ models:
     moving_speed_kph_max: 40
     ammunition_min: 250
     ammunition_max: 500
-    ammunition_rpm_min: 0.01
-    ammunition_rpm_max: 0.05
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 3
     damage_can_support_min: 50
     damage_can_support_max: 75
   Bulldog:
@@ -47,8 +47,8 @@ models:
     moving_speed_kph_max: 40
     ammunition_min: 250
     ammunition_max: 500
-    ammunition_rpm_min: 0.01
-    ammunition_rpm_max: 0.05
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 3
     damage_can_support_min: 50
     damage_can_support_max: 75
   FV430:
@@ -57,8 +57,8 @@ models:
     moving_speed_kph_max: 40
     ammunition_min: 250
     ammunition_max: 500
-    ammunition_rpm_min: 0.01
-    ammunition_rpm_max: 0.05
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 3
     damage_can_support_min: 50
     damage_can_support_max: 75
   Stormer:
@@ -67,7 +67,7 @@ models:
     moving_speed_kph_max: 40
     ammunition_min: 250
     ammunition_max: 500
-    ammunition_rpm_min: 0.01
-    ammunition_rpm_max: 0.05
+    ammunition_rpm_min: 1
+    ammunition_rpm_max: 3
     damage_can_support_min: 50
     damage_can_support_max: 75
