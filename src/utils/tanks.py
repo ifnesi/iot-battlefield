@@ -77,12 +77,12 @@ class Tank:
         else:
             _delta_time = timestamp - self.timestamp
 
-            _rpm = rand_range_float(
-                self._model_config.ammunition_rpm_min,
-                self._model_config.ammunition_rpm_max,
-            )
             if self._ammo_shot < self.ammo:
-                self._ammo_shot += _rpm * _delta_time
+                _rpm = rand_range_float(
+                    self._model_config.ammunition_rpm_min,
+                    self._model_config.ammunition_rpm_max,
+                )
+                self._ammo_shot += _rpm * _delta_time / 60
 
             self.speed = (
                 rand_range_float(
