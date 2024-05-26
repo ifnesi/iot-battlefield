@@ -13,7 +13,7 @@ class ConfigKafkaUnits(BaseModel):
     topic_move: str
 
 
-class ConfigTanksDeployment(BaseModel):
+class ConfigTanksDeploymentBase(BaseModel):
     number_of_units: int
     start_latitude: float
     start_longitude: float
@@ -21,11 +21,15 @@ class ConfigTanksDeployment(BaseModel):
     bearing_angle_max: float
     distance_between_units: float
     bearing_angle_between_units: float
-    seconds_between_moves: float
     damage_probability_min: float
     damage_probability_max: float
     damage_impact_min: float
     damage_impact_max: float
+
+
+class ConfigTanksDeployment(BaseModel):
+    seconds_between_moves: float
+    units: Dict[str, ConfigTanksDeploymentBase]
 
 
 class ConfigTanksModelsBase(BaseModel):
@@ -59,7 +63,7 @@ class ConfigTroopsGeneral(BaseModel):
     deceased_if_body_temperature_under: float
 
 
-class ConfigTroopsDeployment(BaseModel):
+class ConfigTroopsDeploymentBase(BaseModel):
     number_of_units: int
     start_latitude: float
     start_longitude: float
@@ -69,11 +73,15 @@ class ConfigTroopsDeployment(BaseModel):
     moving_speed_kph_max: float
     distance_between_units: float
     bearing_angle_between_units: float
-    seconds_between_moves: float
     ammunition_min: int
     ammunition_max: int
     ammunition_rps_min: float
     ammunition_rps_max: float
+
+
+class ConfigTroopsDeployment(BaseModel):
+    seconds_between_moves: float
+    units: Dict[str, ConfigTroopsDeploymentBase]
 
 
 class ConfigTroopsBloodTypes(BaseModel):

@@ -4,6 +4,39 @@ kafka:
   topic_data: iot_battlefield_troops
   topic_move: iot_battlefield_troops_moves
 
+# Troops deployment
+deployment:
+  seconds_between_moves: 30
+  units:
+    Luhansk:
+      number_of_units: 100
+      start_latitude: 48.5456
+      start_longitude: 39.3423
+      bearing_angle_min: 85
+      bearing_angle_max: 95
+      moving_speed_kph_min: 4
+      moving_speed_kph_max: 8
+      distance_between_units: 5
+      bearing_angle_between_units: 0
+      ammunition_min: 250
+      ammunition_max: 500
+      ammunition_rps_min: 0.1
+      ammunition_rps_max: 1
+    Mariupol:
+      number_of_units: 100
+      start_latitude: 47.0821
+      start_longitude: 37.5152
+      bearing_angle_min: -5
+      bearing_angle_max: 5
+      moving_speed_kph_min: 4
+      moving_speed_kph_max: 8
+      distance_between_units: 5
+      bearing_angle_between_units: 90
+      ammunition_min: 250
+      ammunition_max: 500
+      ammunition_rps_min: 0.1
+      ammunition_rps_max: 1
+
 # General configuration
 general:
   normal_pulse_rate_min: 60
@@ -18,23 +51,6 @@ general:
   height_max: 200
   deceased_if_pulse_rate_under: 20
   deceased_if_body_temperature_under: 32
-
-# Troops deployment
-deployment:
-  number_of_units: 100
-  start_latitude: 48.5456
-  start_longitude: 39.3423
-  bearing_angle_min: -5
-  bearing_angle_max: 5
-  moving_speed_kph_min: 4
-  moving_speed_kph_max: 8
-  distance_between_units: 5
-  bearing_angle_between_units: 90
-  seconds_between_moves: 30
-  ammunition_min: 250
-  ammunition_max: 500
-  ammunition_rps_min: 1
-  ammunition_rps_max: 5
 
 # Blood types probability distribution
 blood_types:

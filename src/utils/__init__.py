@@ -145,30 +145,34 @@ def deploy_units(
         config = yaml.safe_load(f)
 
     if target == "tanks":
-        config_deployment = ConfigTanksDeployment(**config["deployment"])
-        config_models = ConfigTanksModels(data=config["models"])
         class_to_call = Tank
-        params = {
-            "start_point": None,
-            "config_deployment": config_deployment,
-            "config_models": config_models,
-        }
+        config_models = ConfigTanksModels(data=config["models"])
+        config_deployment = ConfigTanksDeployment(**config["deployment"])
+        params = list()
+        for unit, data in config_deployment.units.items():
+            params.append({
+                "unit": unit,
+                "config_deployment": data,
+                "config_models": config_models,
+            })
 
     elif target == "troops":
+        class_to_call = Troop
+        config_ranks = ConfigTroopsRanks(data=config["ranks"])
+        config_injury = ConfigTroopsInjury(data=config["injures"])
         config_general = ConfigTroopsGeneral(**config["general"])
         config_deployment = ConfigTroopsDeployment(**config["deployment"])
-        config_ranks = ConfigTroopsRanks(data=config["ranks"])
         config_blood_types = ConfigTroopsBloodTypes(data=config["blood_types"])
-        config_injury = ConfigTroopsInjury(data=config["injures"])
-        class_to_call = Troop
-        params = {
-            "start_point": None,
-            "config_general": config_general,
-            "config_deployment": config_deployment,
-            "config_blood_types": config_blood_types,
-            "config_ranks": config_ranks,
-            "config_injury": config_injury,
-        }
+        params = list()
+        for unit, data in config_deployment.units.items():
+            params.append({
+                "unit": unit,
+                "config_general": config_general,
+                "config_deployment": data,
+                "config_blood_types": config_blood_types,
+                "config_ranks": config_ranks,
+                "config_injury": config_injury,
+            })
 
     elif target == "flc":
         config_lfc = ConfigFLCDeployment(**config["deployment"])
@@ -227,30 +231,31 @@ def deploy_units(
             time.sleep(lfc._seconds_between_moves)
 
     else:  # troops / tanks
-        c = Coordinates()
-        start = Coordinate(
-            lat=config_deployment.start_latitude,
-            lon=config_deployment.start_longitude,
-        )
+        n = 0
         units = list()
-        stop_reporting = dict()
-        for n in range(config_deployment.number_of_units):
-            try:
-                start = c.destination(
-                    start,
-                    config_deployment.bearing_angle_between_units,
-                    config_deployment.distance_between_units,
-                )
-                params["start_point"] = start
-                units.append(class_to_call(**params))
-                payload = units[n].payload_non_transactional()
-                logging.info(payload)
-                if not dry_run:
-                    stop_reporting[payload["id"]] = False
-                    kafka.queue_data.put(payload)
+        c = Coordinates()
+        for param in params:
+            start = Coordinate(
+                lat=param["config_deployment"].start_latitude,
+                lon=param["config_deployment"].start_longitude,
+            )
+            for _ in range(param["config_deployment"].number_of_units):
+                try:
+                    start = c.destination(
+                        start,
+                        param["config_deployment"].bearing_angle_between_units,
+                        param["config_deployment"].distance_between_units,
+                    )
+                    param["start_point"] = start
+                    units.append(class_to_call(**param))
+                    payload = units[n].payload_non_transactional()
+                    n += 1
+                    logging.info(payload)
+                    if not dry_run:
+                        kafka.queue_data.put(payload)
 
-            except Exception:
-                logging.error(sys_exc(sys.exc_info()))
+                except Exception:
+                    logging.error(sys_exc(sys.exc_info()))
 
         # Move units around the battle field (main thread)
         while True:
@@ -258,13 +263,9 @@ def deploy_units(
                 try:
                     unit.move()
                     payload = unit.payload_transactional()
-                    if not stop_reporting[payload["id"]]:
-                        logging.info(payload)
-                        if not dry_run:
-                            kafka.queue_moves.put(payload)
-                            stop_reporting[payload["id"]] = payload.get(
-                                "deceased", False
-                            ) or payload.get("destroyed", False)
+                    logging.info(payload)
+                    if not dry_run:
+                        kafka.queue_moves.put(payload)
 
                 except Exception:
                     logging.error(sys_exc(sys.exc_info()))

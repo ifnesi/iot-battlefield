@@ -6,18 +6,32 @@ kafka:
 
 # Tanks deployment
 deployment:
-  number_of_units: 50
-  start_latitude: 48.5456
-  start_longitude: 39.3423
-  bearing_angle_min: -5
-  bearing_angle_max: 5
-  distance_between_units: 20
-  bearing_angle_between_units: -90
   seconds_between_moves: 30
-  damage_probability_min: 1
-  damage_probability_max: 5
-  damage_impact_min: 1
-  damage_impact_max: 5
+  units:
+    Luhansk:
+      number_of_units: 50
+      start_latitude: 48.5456
+      start_longitude: 39.3423
+      bearing_angle_min: -5
+      bearing_angle_max: 5
+      distance_between_units: -20
+      bearing_angle_between_units: 90
+      damage_probability_min: 1
+      damage_probability_max: 5
+      damage_impact_min: 1
+      damage_impact_max: 5
+    Mariupol:
+      number_of_units: 50
+      start_latitude: 47.0821
+      start_longitude: 37.5152
+      bearing_angle_min: -5
+      bearing_angle_max: 5
+      distance_between_units: -20
+      bearing_angle_between_units: 90
+      damage_probability_min: 1
+      damage_probability_max: 5
+      damage_impact_min: 1
+      damage_impact_max: 5
 
 # Tanks models
 models:

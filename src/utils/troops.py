@@ -18,17 +18,20 @@ from utils._basemodels import (
 class Troop:
     def __init__(
         self,
-        start_point: Coordinate,
-        config_general: ConfigTroopsGeneral,
-        config_deployment: ConfigTroopsDeployment,
-        config_blood_types: ConfigTroopsBloodTypes,
-        config_ranks: ConfigTroopsRanks,
-        config_injury: ConfigTroopsInjury,
+        unit: str = None,
+        start_point: Coordinate = None,
+        config_general: ConfigTroopsGeneral = None,
+        config_deployment: ConfigTroopsDeployment = None,
+        config_blood_types: ConfigTroopsBloodTypes = None,
+        config_ranks: ConfigTroopsRanks = None,
+        config_injury: ConfigTroopsInjury = None,
     ) -> None:
         self.timestamp = time.time()
+        self.health = 100
         self.deceased = False
         self.injury = None
         self.injury_time = None
+        self.unit = unit
         self.current_location = start_point
         self._ammo_shot = 0
         self._coordinates = Coordinates()
@@ -70,7 +73,7 @@ class Troop:
             k=1,
         )[0]
 
-        self.id = f"troop_{hashlib.sha256(f'{self.name}_{self.rank}_{self.blood_type}'.encode('utf-8')).hexdigest()[:12]}"
+        self.id = f"troop_{hashlib.sha256(f'{self.unit}_{self.name}_{self.rank}_{self.blood_type}'.encode('utf-8')).hexdigest()[:12]}"
 
         self.body_temperature = rand_range_float(
             config_general.normal_body_temperature_min,
@@ -90,6 +93,7 @@ class Troop:
     def payload_non_transactional(self) -> dict:
         return {
             "id": self.id,
+            "unit": self.unit,
             "name": self.name,
             "height": int(self.height),
             "weight": round(self.weight, 2),
@@ -106,6 +110,7 @@ class Troop:
             "body_temperature": round(self.body_temperature, 2),
             "pulse_rate": int(self.pulse_rate),
             "ammo": int(max(self.ammo - self._ammo_shot, 0)),
+            "health": self.health,
             "injury": self.injury,
             "injury_time": None
             if self.injury_time is None
@@ -129,9 +134,9 @@ class Troop:
             #   |\\\\\\\
             #   |\\\\\\\\\
             # m +---------+
-            #   |         |
-            #   +---------+----> (time)
-            #   0         T
+            #   |    |    |
+            #   +----+----+----> (time)
+            #   0    t    T
             return round(m + (M - m) * (T - t) / T, 2)
 
         timestamp = time.time()
@@ -187,6 +192,18 @@ class Troop:
                         _delta_injury_time,
                     )
 
+                self.health = int(
+                    max(
+                        _equation(
+                            100,
+                            0,
+                            self._T,
+                            _delta_injury_time,
+                        ),
+                        0,
+                    )
+                )
+
             else:
                 _speed = (
                     rand_range_float(
@@ -222,5 +239,6 @@ class Troop:
             if self.pulse_rate <= self._config_general.deceased_if_pulse_rate_under:
                 self.deceased = True
                 self.pulse_rate = 0
+                self.health = 0
 
         self.timestamp = timestamp

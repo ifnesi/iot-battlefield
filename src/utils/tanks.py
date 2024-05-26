@@ -9,14 +9,17 @@ from utils._basemodels import Coordinate, ConfigTanksDeployment, ConfigTanksMode
 class Tank:
     def __init__(
         self,
-        start_point: Coordinate,
-        config_deployment: ConfigTanksDeployment,
-        config_models: ConfigTanksModels,
+        unit: str = None,
+        start_point: Coordinate = None,
+        config_deployment: ConfigTanksDeployment = None,
+        config_models: ConfigTanksModels = None,
     ) -> None:
         self.timestamp = time.time()
         self.damage = 0
+        self.health = 100
         self._ammo_shot = 0
         self.destroyed = False
+        self.unit = unit
         self.current_location = start_point
         self._coordinates = Coordinates()
         self._config_deployment = config_deployment
@@ -30,7 +33,7 @@ class Tank:
         self._model_config = config_models.data[self.model]
 
         _reference = (
-            f"{start_point.lat}_{start_point.lon}_{self.model}_{random.random()}"
+            f"{start_point.lat}_{start_point.lon}_{self.model}_{unit}_{random.random()}"
         )
         self.id = f"tank_{hashlib.sha256(_reference.encode('utf-8')).hexdigest()[:12]}"
 
@@ -52,6 +55,7 @@ class Tank:
     def payload_non_transactional(self) -> dict:
         return {
             "id": self.id,
+            "unit": self.unit,
             "model": self.model,
             "timestamp": format_timestamp(self.timestamp),
         }
@@ -61,6 +65,7 @@ class Tank:
             "id": self.id,
             "lat": self.current_location.lat,
             "lon": self.current_location.lon,
+            "health": self.health,
             "ammo": int(max(self.ammo - self._ammo_shot, 0)),
             "damage": round(self.damage, 2),
             "current_speed": round(self.speed * 3.6, 2),
@@ -109,10 +114,14 @@ class Tank:
                     self._config_deployment.damage_impact_max,
                 )
                 self.damage += _damage_impact
+                self.health = int(
+                    100 * max(1 - self.damage / self._supported_damage, 0)
+                )
 
                 if self.damage > self._supported_damage:
                     self.damage = self._supported_damage
                     self.destroyed = True
                     self.speed = 0
+                    self.health = 0
 
         self.timestamp = timestamp
