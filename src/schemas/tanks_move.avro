@@ -16,6 +16,10 @@
             "type": "double"
         },
         {
+            "name": "health",
+            "type": "int"
+        },
+        {
             "name": "ammo",
             "type": "int"
         },

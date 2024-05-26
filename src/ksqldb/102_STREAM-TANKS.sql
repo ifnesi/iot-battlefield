@@ -2,9 +2,11 @@ CREATE STREAM IF NOT EXISTS `$TANKS.kafka.topic_data-joined` AS
 SELECT
     TM.id AS `id`,
     T.`key` AS `key`,
+    T.unit AS `unit`,
     T.model AS `model`,
     TM.lat AS `lat`,
     TM.lon AS `lon`,
+    TM.health AS `health`,
     TM.ammo AS `ammo`,
     TM.damage AS `damage`,
     TM.destroyed AS `destroyed`,

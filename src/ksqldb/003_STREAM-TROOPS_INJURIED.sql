@@ -2,6 +2,7 @@ CREATE STREAM IF NOT EXISTS `$TROOPS.kafka.topic_data-injuried` AS
 SELECT
     `id`,
     `key`,
+    `unit`,
     `name`,
     `rank`,
     `height`,
@@ -9,6 +10,7 @@ SELECT
     `blood_type`,
     `lat`,
     `lon`,
+    `health`,
     `body_temperature`,
     `pulse_rate`,
     `ammo`,
