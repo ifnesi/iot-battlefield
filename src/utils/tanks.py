@@ -52,9 +52,12 @@ class Tank:
             value_min=50,
         )
 
-        self._bearing_angle = rand_range_float(
-            config_deployment.bearing_angle_min,
-            config_deployment.bearing_angle_max,
+        self._bearing_angle = random_gauss(
+            0,
+            config_deployment.bearing_angle_mean,
+            config_deployment.bearing_angle_stdev,
+            value_min=-360,
+            value_max=360,
         )
 
     def payload_non_transactional(self) -> dict:
@@ -112,15 +115,20 @@ class Tank:
                 distance,
             )
 
-            _damage_probability = rand_range_float(
-                self._config_deployment.damage_probability_min,
-                self._config_deployment.damage_probability_max,
+            _damage_probability = random_gauss(
+                0,
+                self._config_deployment.damage_probability_mean,
+                self._config_deployment.damage_probability_stdev,
+                value_min=0,
             )
 
             if _damage_probability > random.random() * 100:
-                _damage_impact = rand_range_float(
-                    self._config_deployment.damage_impact_min,
-                    self._config_deployment.damage_impact_max,
+                _damage_impact = random_gauss(
+                    0,
+                    self._config_deployment.damage_impact_mean,
+                    self._config_deployment.damage_impact_stdev,
+                    value_min=0,
+                    value_max=100,
                 )
                 self.damage += _damage_impact
                 self.health = int(

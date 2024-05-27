@@ -1,59 +1,101 @@
-# Kafka config
+#########################
+# Kafka config (Troops) #
+#########################
 kafka:
+  # Kafka producer client ID
   client_id: iot_battlefield_troops
+  # Kafka topic for the troops deployed (produced only when troops are deployed on the battlefield)
   topic_data: iot_battlefield_troops
+  # Kafka topic for whenever the troops move on the battlefield
   topic_move: iot_battlefield_troops_moves
 
-# Troops deployment
+
+#####################
+# Troops deployment #
+#####################
 deployment:
+  # Seconds between troops move
   seconds_between_moves: 30
   units:
+    #Unit name:
+      #number_of_units: Number of troops to be deployed on the unit
+      #start_latitude: Starting latitude where the initial troop will be deployed (in decimal degrees)
+      #start_longitude: Starting longitude where the initial troop will be deployed (in decimal degrees)
+      #bearing_angle_mean: Mean bearing angle (horizontal angle measured in degrees clockwise from north on a compass) set to each troop to determine in which direction they will move
+      #bearing_angle_stdev: Standard deviation bearing angle (horizontal angle measured in degrees clockwise from north on a compass) set to each troop to determine in which direction they will move
+      #moving_speed_kph_mean: Mean moving speed of the troop (in Km/h)
+      #moving_speed_kph_stdev:Standard deviation moving speed of the troop (in Km/h)
+      #distance_between_units: Initial distance between deployed troops (in metres)
+      #bearing_angle_between_units: Bearing angle (horizontal angle measured in degrees clockwise from north on a compass) between troops (e.g. 0 = troops will be deployed vertically, 90 = troops will be deployed horizontally), value in degrees
+      #ammunition_mean: Mean amount of ammo loaded with the troop
+      #ammunition_stdev: Standard deviation amount of ammo loaded with the troop
+      #ammunition_rps_mean: Mean rounds per second a troop can fire
+      #ammunition_rps_stdev: Standard deviation rounds per second a troop can fire
     Luhansk:
       number_of_units: 100
       start_latitude: 48.5456
       start_longitude: 39.3423
-      bearing_angle_min: 85
-      bearing_angle_max: 95
+      bearing_angle_mean: 90
+      bearing_angle_stdev: 3
       moving_speed_kph_mean: 4
       moving_speed_kph_stdev: 0.5
       distance_between_units: 10
       bearing_angle_between_units: 0
       ammunition_mean: 250
       ammunition_stdev: 10
-      ammunition_rps_min: 0.1
-      ammunition_rps_max: 1
+      ammunition_rps_mean: 0.1
+      ammunition_rps_stdev: 0.01
     Mariupol:
       number_of_units: 100
       start_latitude: 47.0821
       start_longitude: 37.5152
-      bearing_angle_min: -5
-      bearing_angle_max: 5
+      bearing_angle_mean: 0
+      bearing_angle_stdev: 3
       moving_speed_kph_mean: 4
       moving_speed_kph_stdev: 8
-      distance_between_units: 5
+      distance_between_units: 10
       bearing_angle_between_units: 90
       ammunition_mean: 250
       ammunition_stdev: 10
-      ammunition_rps_min: 0.1
-      ammunition_rps_max: 1
+      ammunition_rps_mean: 0.1
+      ammunition_rps_stdev: 0.01
 
-# General configuration
+
+#########################
+# General configuration #
+#########################
 general:
+  # Minimum pulse rate o a troop
   normal_pulse_rate_min: 60
+  # Maximum pulse rate o a troop
   normal_pulse_rate_max: 120
+  # Mean variation of the pulse rate
   normal_pulse_rate_var_mean: 0
+  # Standard deviation variation of the pulse rate
   normal_pulse_rate_var_stdev: 3
+  # Minimum normal body temperature
   normal_body_temperature_min: 36.1
+  # Maximum normal body temperature
   normal_body_temperature_max: 37.2
+  # Mean Body Mass Index
   bmi_mean: 25
+  # Standard deviation Body Mass Index
   bmi_stdev: 1.5
+  # Mean height
   height_mean: 175
+  # Standard deviation height
   height_stdev: 6.35
+  # Pulse rate to assert when a troop is deceased
   deceased_if_pulse_rate_under: 20
+  # Body temperature to assert when a troop is deceased
   deceased_if_body_temperature_under: 32
 
-# Blood types probability distribution
+
+########################################
+# Blood types probability distribution #
+########################################
 blood_types:
+  #Blood type: Proportion
   O+: 36
   O-: 13
   A+: 30
@@ -63,16 +105,31 @@ blood_types:
   AB+: 2
   AB-: 1
 
-# Percentage of ranks to be deployed
+
+###################################################
+# Percentage of ranks to be deployed on each unit #
+###################################################
 ranks:
+  #Rank name: Proportion
   Lieutenant Colonel: 1
   Major: 4
   Captain: 10
   Lieutenant: 20
   Second Lieutenant: 65
 
-# Injures
+
+###########
+# Injures #
+###########
 injures:
+  #Body part name:
+    #probability: Probability of being hit
+    #death_minutes_mean: Mean time to die after being hit
+    #death_minutes_stdev: Standard deviation time to die after being hit
+    #pulse_rate_surge: Increase on pulse rate right after being hit
+    #body_temperature_drop: Drop in body temperature right after being hit
+    #moving_speed_kph: Moving speed after being hit (in Km/h)
+    #able_to_use_weapon: Is still able to fire a weapon if being hit? (true/false)
   leg:
     probability: 1
     death_minutes_mean: 30

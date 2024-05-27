@@ -1,13 +1,37 @@
-# Kafka config
+######################################
+# Kafka config  (Front Line Command) #
+######################################
 kafka:
+  # Kafka producer client ID
   client_id: iot_battlefield_flc
+  # Kafka topic for the FLC deployed (produced only when FLCs are deployed on the battlefield)
   topic_data: iot_battlefield_flc
+  # Kafka topic to emulate changes in the supplied of the FLCs
   topic_move: iot_battlefield_flc_moves
 
-# Front Line Command units
+
+############################
+# Front Line Command units #
+############################
 deployment:
+  # Seconds between emulation on FLCs supplies
   seconds_between_moves: 30
   locations:
+    #Location name:
+      #latitude: Latitude where the FLC will be deployed (in decial degrees)
+      #longitude: Longitude where the FLC will be deployed (in decial degrees)
+      #food_level_min: Minimun level of food for the FLC to be deployed with
+      #food_level_max: Maxmun level of food for the FLC to be deployed with
+      #food_level_var_mean: Mean variation of level of food
+      #food_level_var_stdev: Standard deviation variation of level of food
+      #ammunition_level_min: Minimun level of ammo for the FLC to be deployed with
+      #ammunition_level_max: Maxmun level of ammo for the FLC to be deployed with
+      #ammunition_level_var_mean: Mean variation of level of ammo
+      #ammunition_level_var_stdev: Standard deviation variation of level of ammo
+      #health_level_min: Minimun level of health for the FLC to be deployed with
+      #health_level_max: Maxmun level of health for the FLC to be deployed with
+      #health_level_var_mean: Mean variation of level of health
+      #health_level_var_stdev: Standard deviation variation of level of health
     Luhansk:
       latitude: 48.5456
       longitude: 39.3423

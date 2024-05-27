@@ -17,14 +17,14 @@ class ConfigTanksDeploymentBase(BaseModel):
     number_of_units: int
     start_latitude: float
     start_longitude: float
-    bearing_angle_min: float
-    bearing_angle_max: float
+    bearing_angle_mean: float
+    bearing_angle_stdev: float
     distance_between_units: float
     bearing_angle_between_units: float
-    damage_probability_min: float
-    damage_probability_max: float
-    damage_impact_min: float
-    damage_impact_max: float
+    damage_probability_mean: float
+    damage_probability_stdev: float
+    damage_impact_mean: float
+    damage_impact_stdev: float
 
 
 class ConfigTanksDeployment(BaseModel):
@@ -67,16 +67,16 @@ class ConfigTroopsDeploymentBase(BaseModel):
     number_of_units: int
     start_latitude: float
     start_longitude: float
-    bearing_angle_min: int
-    bearing_angle_max: int
+    bearing_angle_mean: float
+    bearing_angle_stdev: float
     moving_speed_kph_mean: float
     moving_speed_kph_stdev: float
     distance_between_units: float
     bearing_angle_between_units: float
     ammunition_mean: float
     ammunition_stdev: float
-    ammunition_rps_min: float
-    ammunition_rps_max: float
+    ammunition_rps_mean: float
+    ammunition_rps_stdev: float
 
 
 class ConfigTroopsDeployment(BaseModel):

@@ -93,9 +93,12 @@ class Troop:
             config_general.normal_pulse_rate_max,
         )
 
-        self._bearing_angle = rand_range_float(
-            config_deployment.bearing_angle_min,
-            config_deployment.bearing_angle_max,
+        self._bearing_angle = random_gauss(
+            0,
+            config_deployment.bearing_angle_mean,
+            config_deployment.bearing_angle_stdev,
+            value_min=-360,
+            value_max=360,
         )
 
     def payload_non_transactional(self) -> dict:
@@ -237,9 +240,11 @@ class Troop:
                 )
 
             if self._config_injury.data[self.injury].able_to_use_weapon:
-                _rps = rand_range_float(
-                    self._config_deployment.ammunition_rps_min,
-                    self._config_deployment.ammunition_rps_max,
+                _rps = random_gauss(
+                    0,
+                    self._config_deployment.ammunition_rps_mean,
+                    self._config_deployment.ammunition_rps_stdev,
+                    value_min=0,
                 )
                 if self._ammo_shot < self.ammo:
                     self._ammo_shot += _rps * _delta_time

@@ -1,44 +1,78 @@
-# Kafka config
+########################
+# Kafka config (Tanks) #
+########################
 kafka:
+  # Kafka producer client ID
   client_id: iot_battlefield_tanks
+  # Kafka topic for the tanks deployed (produced only when tanks are deployed on the battlefield)
   topic_data: iot_battlefield_tanks
+  # Kafka topic for whenever the tanks move on the battlefield
   topic_move: iot_battlefield_tanks_moves
 
-# Tanks deployment
+
+####################
+# Tanks deployment #
+####################
 deployment:
+  # Seconds between tanks move
   seconds_between_moves: 30
   units:
+    #Unit name:
+      #number_of_units: Number of tanks to be deployed on the unit
+      #start_latitude: Starting latitude where the initial tank will be deployed (in decimal degrees)
+      #start_longitude: Starting longitude where the initial tank will be deployed (in decimal degrees)
+      #bearing_angle_mean: Mean bearing angle (horizontal angle measured in degrees clockwise from north on a compass) set to each tank to determine in which direction they will move
+      #bearing_angle_stdev: Standard deviation bearing angle (horizontal angle measured in degrees clockwise from north on a compass) set to each tank to determine in which direction they will move
+      #distance_between_units: Initial distance between deployed tanks (in metres)
+      #bearing_angle_between_units: Bearing angle (horizontal angle measured in degrees clockwise from north on a compass) between tanks (e.g. 0 = tanks will be deployed vertically, 90 = tanks will be deployed horizontally), value in degrees
+      #damage_probability_mean: Mean probability of a tank being hit (percentage)
+      #damage_probability_stdev: Standard deviation probability of a tank being hit (percentage)
+      #damage_impact_mean: Mean impact if a tank gets hit (percentage)
+      #damage_impact_stdev: Standard deviation impact if a tank gets hit (percentage)
     Luhansk:
       number_of_units: 50
       start_latitude: 48.5456
       start_longitude: 39.3423
-      bearing_angle_min: -5
-      bearing_angle_max: 5
-      distance_between_units: -20
-      bearing_angle_between_units: 90
-      damage_probability_min: 1
-      damage_probability_max: 5
-      damage_impact_min: 1
-      damage_impact_max: 5
+      bearing_angle_mean: 90
+      bearing_angle_stdev: 3
+      distance_between_units: -30
+      bearing_angle_between_units: 0
+      damage_probability_mean: 1
+      damage_probability_stdev: 2
+      damage_impact_mean: 1
+      damage_impact_stdev: 2
     Mariupol:
       number_of_units: 50
       start_latitude: 47.0821
       start_longitude: 37.5152
-      bearing_angle_min: -5
-      bearing_angle_max: 5
+      bearing_angle_mean: 0
+      bearing_angle_stdev: 3
       distance_between_units: -30
       bearing_angle_between_units: 90
-      damage_probability_min: 1
-      damage_probability_max: 5
-      damage_impact_min: 1
-      damage_impact_max: 5
+      damage_probability_mean: 1
+      damage_probability_stdev: 2
+      damage_impact_mean: 1
+      damage_impact_stdev: 2
 
-# Tanks models
+
+################
+# Tanks models #
+################
 models:
+  #Tank model name:
+    #proportion: Proportion of tanks to be deployed on the unit
+    #moving_speed_kph_mean: Mean moving speed of the tank (in Km/h)
+    #moving_speed_kph_stdev: Standard deviation moving speed of the tank (in Km/h)
+    #ammunition_mean: Mean amount of ammo loaded in the tank
+    #ammunition_stdev: Standard deviation amount of ammo loaded in the tank
+    #ammunition_rpm_mean: Mean rounds per minute a tank can fire
+    #ammunition_rpm_stdev: Standard deviation rounds per minute a tank can fire
+    #damage_can_support_mean: Mean damage a tank can support before being destroyed
+    #damage_can_support_stdev: Standard deviation damage a tank can support before being destroyed
   Challenger2:
     proportion: 20
-    moving_speed_kph_mean: 25
-    moving_speed_kph_stdev: 5
+    moving_speed_kph_mean: 10
+    moving_speed_kph_stdev: 3
     ammunition_mean: 350
     ammunition_stdev: 10
     ammunition_rpm_mean: 1
@@ -47,8 +81,8 @@ models:
     damage_can_support_stdev: 5
   Warrior:
     proportion: 20
-    moving_speed_kph_mean: 25
-    moving_speed_kph_stdev: 5
+    moving_speed_kph_mean: 10
+    moving_speed_kph_stdev: 3
     ammunition_mean: 350
     ammunition_stdev: 10
     ammunition_rpm_mean: 1
@@ -57,8 +91,8 @@ models:
     damage_can_support_stdev: 5
   Bulldog:
     proportion: 20
-    moving_speed_kph_mean: 25
-    moving_speed_kph_stdev: 5
+    moving_speed_kph_mean: 10
+    moving_speed_kph_stdev: 3
     ammunition_mean: 350
     ammunition_stdev: 10
     ammunition_rpm_mean: 1
@@ -67,8 +101,8 @@ models:
     damage_can_support_stdev: 5
   FV430:
     proportion: 20
-    moving_speed_kph_mean: 25
-    moving_speed_kph_stdev: 5
+    moving_speed_kph_mean: 10
+    moving_speed_kph_stdev: 3
     ammunition_mean: 350
     ammunition_stdev: 10
     ammunition_rpm_mean: 1
@@ -77,8 +111,8 @@ models:
     damage_can_support_stdev: 5
   Stormer:
     proportion: 20
-    moving_speed_kph_mean: 25
-    moving_speed_kph_stdev: 5
+    moving_speed_kph_mean: 10
+    moving_speed_kph_stdev: 3
     ammunition_mean: 350
     ammunition_stdev: 10
     ammunition_rpm_mean: 1
