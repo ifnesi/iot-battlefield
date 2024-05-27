@@ -38,19 +38,18 @@ def rand_range_float(
 
 
 def random_gauss(
-    value,
-    mu,
-    sigma,
-    value_min,
-    value_max,
+    value: float,
+    mu: float,
+    sigma: float,
+    value_min: float = None,
+    value_max: float = None,
 ) -> float:
-    return min(
-        max(
-            value + random.gauss(mu, sigma),
-            value_min,
-        ),
-        value_max,
-    )
+    new_value = value + random.gauss(mu, sigma)
+    if value_min is not None:
+        new_value = max(new_value, value_min)
+    if value_max is not None:
+        new_value = min(new_value, value_max)
+    return new_value
 
 
 class Coordinates:

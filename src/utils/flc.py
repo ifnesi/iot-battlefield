@@ -59,22 +59,22 @@ class FLC:
             self.ammo,
             self._config_flc.ammunition_level_var_mean,
             self._config_flc.ammunition_level_var_stdev,
-            self._config_flc.ammunition_level_min,
-            self._config_flc.ammunition_level_max,
+            value_min=self._config_flc.ammunition_level_min,
+            value_max=self._config_flc.ammunition_level_max,
         )
 
         self.health = random_gauss(
             self.health,
             self._config_flc.health_level_var_mean,
             self._config_flc.health_level_var_stdev,
-            self._config_flc.health_level_min,
-            self._config_flc.health_level_max,
+            value_min=self._config_flc.health_level_min,
+            value_max=self._config_flc.health_level_max,
         )
 
         self.food = random_gauss(
             self.food,
             self._config_flc.food_level_var_mean,
             self._config_flc.food_level_var_stdev,
-            self._config_flc.food_level_min,
-            self._config_flc.food_level_max,
+            value_min=self._config_flc.food_level_min,
+            value_max=self._config_flc.food_level_max,
         )

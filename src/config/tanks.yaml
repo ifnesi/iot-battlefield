@@ -26,7 +26,7 @@ deployment:
       start_longitude: 37.5152
       bearing_angle_min: -5
       bearing_angle_max: 5
-      distance_between_units: -20
+      distance_between_units: -30
       bearing_angle_between_units: 90
       damage_probability_min: 1
       damage_probability_max: 5
@@ -37,51 +37,51 @@ deployment:
 models:
   Challenger2:
     proportion: 20
-    moving_speed_kph_min: 10
-    moving_speed_kph_max: 40
-    ammunition_min: 250
-    ammunition_max: 500
-    ammunition_rpm_min: 1
-    ammunition_rpm_max: 3
-    damage_can_support_min: 50
-    damage_can_support_max: 75
+    moving_speed_kph_mean: 25
+    moving_speed_kph_stdev: 5
+    ammunition_mean: 350
+    ammunition_stdev: 10
+    ammunition_rpm_mean: 1
+    ammunition_rpm_stdev: 0.5
+    damage_can_support_mean: 65
+    damage_can_support_stdev: 5
   Warrior:
     proportion: 20
-    moving_speed_kph_min: 10
-    moving_speed_kph_max: 40
-    ammunition_min: 250
-    ammunition_max: 500
-    ammunition_rpm_min: 1
-    ammunition_rpm_max: 3
-    damage_can_support_min: 50
-    damage_can_support_max: 75
+    moving_speed_kph_mean: 25
+    moving_speed_kph_stdev: 5
+    ammunition_mean: 350
+    ammunition_stdev: 10
+    ammunition_rpm_mean: 1
+    ammunition_rpm_stdev: 0.5
+    damage_can_support_mean: 65
+    damage_can_support_stdev: 5
   Bulldog:
     proportion: 20
-    moving_speed_kph_min: 10
-    moving_speed_kph_max: 40
-    ammunition_min: 250
-    ammunition_max: 500
-    ammunition_rpm_min: 1
-    ammunition_rpm_max: 3
-    damage_can_support_min: 50
-    damage_can_support_max: 75
+    moving_speed_kph_mean: 25
+    moving_speed_kph_stdev: 5
+    ammunition_mean: 350
+    ammunition_stdev: 10
+    ammunition_rpm_mean: 1
+    ammunition_rpm_stdev: 0.5
+    damage_can_support_mean: 65
+    damage_can_support_stdev: 5
   FV430:
     proportion: 20
-    moving_speed_kph_min: 10
-    moving_speed_kph_max: 40
-    ammunition_min: 250
-    ammunition_max: 500
-    ammunition_rpm_min: 1
-    ammunition_rpm_max: 3
-    damage_can_support_min: 50
-    damage_can_support_max: 75
+    moving_speed_kph_mean: 25
+    moving_speed_kph_stdev: 5
+    ammunition_mean: 350
+    ammunition_stdev: 10
+    ammunition_rpm_mean: 1
+    ammunition_rpm_stdev: 0.5
+    damage_can_support_mean: 65
+    damage_can_support_stdev: 5
   Stormer:
     proportion: 20
-    moving_speed_kph_min: 10
-    moving_speed_kph_max: 40
-    ammunition_min: 250
-    ammunition_max: 500
-    ammunition_rpm_min: 1
-    ammunition_rpm_max: 3
-    damage_can_support_min: 50
-    damage_can_support_max: 75
+    moving_speed_kph_mean: 25
+    moving_speed_kph_stdev: 5
+    ammunition_mean: 350
+    ammunition_stdev: 10
+    ammunition_rpm_mean: 1
+    ammunition_rpm_stdev: 0.5
+    damage_can_support_mean: 65
+    damage_can_support_stdev: 5

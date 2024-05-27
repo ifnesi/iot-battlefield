@@ -2,7 +2,7 @@ import time
 import random
 import hashlib
 
-from utils._utils import rand_range_float, format_timestamp, Coordinates
+from utils._utils import rand_range_float, random_gauss, format_timestamp, Coordinates
 from utils._basemodels import Coordinate, ConfigTanksDeployment, ConfigTanksModels
 
 
@@ -37,14 +37,19 @@ class Tank:
         )
         self.id = f"tank_{hashlib.sha256(_reference.encode('utf-8')).hexdigest()[:12]}"
 
-        self._supported_damage = rand_range_float(
-            self._model_config.damage_can_support_min,
-            self._model_config.damage_can_support_max,
+        self._supported_damage = random_gauss(
+            0,
+            self._model_config.damage_can_support_mean,
+            self._model_config.damage_can_support_stdev,
+            value_min=15,
+            value_max=100,
         )
 
-        self.ammo = rand_range_float(
-            self._model_config.ammunition_min,
-            self._model_config.ammunition_max,
+        self.ammo = random_gauss(
+            0,
+            self._model_config.ammunition_mean,
+            self._model_config.ammunition_stdev,
+            value_min=50,
         )
 
         self._bearing_angle = rand_range_float(
@@ -83,16 +88,20 @@ class Tank:
             _delta_time = timestamp - self.timestamp
 
             if self._ammo_shot < self.ammo:
-                _rpm = rand_range_float(
-                    self._model_config.ammunition_rpm_min,
-                    self._model_config.ammunition_rpm_max,
+                _rpm = random_gauss(
+                    0,
+                    self._model_config.ammunition_rpm_mean,
+                    self._model_config.ammunition_rpm_stdev,
+                    value_min=0,
                 )
                 self._ammo_shot += _rpm * _delta_time / 60
 
             self.speed = (
-                rand_range_float(
-                    self._model_config.moving_speed_kph_min,
-                    self._model_config.moving_speed_kph_max,
+                random_gauss(
+                    0,
+                    self._model_config.moving_speed_kph_mean,
+                    self._model_config.moving_speed_kph_stdev,
+                    value_min=0,
                 )
                 / 3.6
             )

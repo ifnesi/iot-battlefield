@@ -45,20 +45,28 @@ class Troop:
         f = Faker()
         self.name = f.name()
 
-        bmi = rand_range_float(
-            config_general.bmi_min,
-            config_general.bmi_max,
+        self.height = random_gauss(
+            0,
+            config_general.height_mean,
+            config_general.height_stdev,
+            value_min=150,
+            value_max=215,
         )
 
-        self.height = rand_range_float(
-            config_general.height_min,
-            config_general.height_max,
+        bmi = random_gauss(
+            0,
+            config_general.bmi_mean,
+            config_general.bmi_stdev,
+            value_min=18,
+            value_max=32,
         )
         self.weight = bmi * (self.height / 100) ** 2
 
-        self.ammo = rand_range_float(
-            config_deployment.ammunition_min,
-            config_deployment.ammunition_max,
+        self.ammo = random_gauss(
+            0,
+            config_deployment.ammunition_mean,
+            config_deployment.ammunition_stdev,
+            value_min=50,
         )
 
         self.rank = random.choices(
@@ -168,7 +176,12 @@ class Troop:
                         - self._config_injury.data[self.injury].body_temperature_drop,
                         self._config_general.deceased_if_body_temperature_under + 1,
                     )
-                    self._T = self._config_injury.data[self.injury].death_minutes * 60
+                    self._T = random_gauss(
+                        0,
+                        self._config_injury.data[self.injury].death_minutes_mean,
+                        self._config_injury.data[self.injury].death_minutes_stdev,
+                        value_min=0,
+                      )  * 60
                     self._pulse_rate_M = float(self.pulse_rate)
                     self._pulse_rate_m = (
                         self._config_general.deceased_if_pulse_rate_under
@@ -206,9 +219,11 @@ class Troop:
 
             else:
                 _speed = (
-                    rand_range_float(
-                        self._config_deployment.moving_speed_kph_min,
-                        self._config_deployment.moving_speed_kph_max,
+                    random_gauss(
+                        0,
+                        self._config_deployment.moving_speed_kph_mean,
+                        self._config_deployment.moving_speed_kph_stdev,
+                        value_min=0,
                     )
                     / 3.6
                 )
@@ -217,11 +232,11 @@ class Troop:
                     self.pulse_rate,
                     self._config_general.normal_pulse_rate_var_mean,
                     self._config_general.normal_pulse_rate_var_stdev,
-                    self._config_general.normal_pulse_rate_min,
-                    self._config_general.normal_pulse_rate_max,
+                    value_min=self._config_general.normal_pulse_rate_min,
+                    value_max=self._config_general.normal_pulse_rate_max,
                 )
 
-            if self._config_injury.data[self.injury].able_to_use_ammo:
+            if self._config_injury.data[self.injury].able_to_use_weapon:
                 _rps = rand_range_float(
                     self._config_deployment.ammunition_rps_min,
                     self._config_deployment.ammunition_rps_max,
@@ -240,5 +255,6 @@ class Troop:
                 self.deceased = True
                 self.pulse_rate = 0
                 self.health = 0
+                self.body_temperature = self._config_general.deceased_if_body_temperature_under
 
         self.timestamp = timestamp

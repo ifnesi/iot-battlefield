@@ -34,14 +34,14 @@ class ConfigTanksDeployment(BaseModel):
 
 class ConfigTanksModelsBase(BaseModel):
     proportion: float
-    moving_speed_kph_min: float
-    moving_speed_kph_max: float
-    ammunition_min: int
-    ammunition_max: int
-    ammunition_rpm_min: float
-    ammunition_rpm_max: float
-    damage_can_support_min: float
-    damage_can_support_max: float
+    moving_speed_kph_mean: float
+    moving_speed_kph_stdev: float
+    ammunition_mean: float
+    ammunition_stdev: float
+    ammunition_rpm_mean: float
+    ammunition_rpm_stdev: float
+    damage_can_support_mean: float
+    damage_can_support_stdev: float
 
 
 class ConfigTanksModels(BaseModel):
@@ -55,10 +55,10 @@ class ConfigTroopsGeneral(BaseModel):
     normal_pulse_rate_var_stdev: int
     normal_body_temperature_min: float
     normal_body_temperature_max: float
-    bmi_min: float
-    bmi_max: float
-    height_min: int
-    height_max: int
+    bmi_mean: float
+    bmi_stdev: float
+    height_mean: float
+    height_stdev: float
     deceased_if_pulse_rate_under: float
     deceased_if_body_temperature_under: float
 
@@ -69,12 +69,12 @@ class ConfigTroopsDeploymentBase(BaseModel):
     start_longitude: float
     bearing_angle_min: int
     bearing_angle_max: int
-    moving_speed_kph_min: float
-    moving_speed_kph_max: float
+    moving_speed_kph_mean: float
+    moving_speed_kph_stdev: float
     distance_between_units: float
     bearing_angle_between_units: float
-    ammunition_min: int
-    ammunition_max: int
+    ammunition_mean: float
+    ammunition_stdev: float
     ammunition_rps_min: float
     ammunition_rps_max: float
 
@@ -94,11 +94,12 @@ class ConfigTroopsRanks(BaseModel):
 
 class ConfigTroopsInjuryBase(BaseModel):
     probability: float
-    death_minutes: float
+    death_minutes_mean: float
+    death_minutes_stdev: float
     pulse_rate_surge: float
     body_temperature_drop: float
     moving_speed_kph: float
-    able_to_use_ammo: bool
+    able_to_use_weapon: bool
 
 
 class ConfigTroopsInjury(BaseModel):
@@ -109,11 +110,12 @@ class ConfigTroopsInjury(BaseModel):
         sum_prob = sum([value.probability for value in data.values()])
         data[None] = ConfigTroopsInjuryBase(
             probability=(100 - sum_prob) if sum_prob < 100 else 50 * sum_prob,
-            death_minutes=0,
+            death_minutes_mean=0,
+            death_minutes_stdev=0,
             pulse_rate_surge=0,
             body_temperature_drop=0,
             moving_speed_kph=0,
-            able_to_use_ammo=True,
+            able_to_use_weapon=True,
         )
         return data
 

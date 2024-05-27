@@ -14,12 +14,12 @@ deployment:
       start_longitude: 39.3423
       bearing_angle_min: 85
       bearing_angle_max: 95
-      moving_speed_kph_min: 4
-      moving_speed_kph_max: 8
-      distance_between_units: 5
+      moving_speed_kph_mean: 4
+      moving_speed_kph_stdev: 0.5
+      distance_between_units: 10
       bearing_angle_between_units: 0
-      ammunition_min: 250
-      ammunition_max: 500
+      ammunition_mean: 250
+      ammunition_stdev: 10
       ammunition_rps_min: 0.1
       ammunition_rps_max: 1
     Mariupol:
@@ -28,12 +28,12 @@ deployment:
       start_longitude: 37.5152
       bearing_angle_min: -5
       bearing_angle_max: 5
-      moving_speed_kph_min: 4
-      moving_speed_kph_max: 8
+      moving_speed_kph_mean: 4
+      moving_speed_kph_stdev: 8
       distance_between_units: 5
       bearing_angle_between_units: 90
-      ammunition_min: 250
-      ammunition_max: 500
+      ammunition_mean: 250
+      ammunition_stdev: 10
       ammunition_rps_min: 0.1
       ammunition_rps_max: 1
 
@@ -45,10 +45,10 @@ general:
   normal_pulse_rate_var_stdev: 3
   normal_body_temperature_min: 36.1
   normal_body_temperature_max: 37.2
-  bmi_min: 22
-  bmi_max: 27
-  height_min: 155
-  height_max: 200
+  bmi_mean: 25
+  bmi_stdev: 1.5
+  height_mean: 175
+  height_stdev: 6.35
   deceased_if_pulse_rate_under: 20
   deceased_if_body_temperature_under: 32
 
@@ -75,43 +75,49 @@ ranks:
 injures:
   leg:
     probability: 1
-    death_minutes: 30
+    death_minutes_mean: 30
+    death_minutes_stdev: 1
     pulse_rate_surge: 20
     body_temperature_drop: 0.5
     moving_speed_kph: 1
-    able_to_use_ammo: true
+    able_to_use_weapon: true
   arm:
     probability: 1
-    death_minutes: 30
+    death_minutes_mean: 30
+    death_minutes_stdev: 1
     pulse_rate_surge: 20
     body_temperature_drop: 0.5
     moving_speed_kph: 2
-    able_to_use_ammo: true
+    able_to_use_weapon: true
   belly:
     probability: 0.5
-    death_minutes: 15
+    death_minutes_mean: 15
+    death_minutes_stdev: 0.5
     pulse_rate_surge: 40
     body_temperature_drop: 1
     moving_speed_kph: 0.1
-    able_to_use_ammo: true
+    able_to_use_weapon: true
   chest:
     probability: 0.5
-    death_minutes: 10
+    death_minutes_mean: 10
+    death_minutes_stdev: 0.5
     pulse_rate_surge: 40
     body_temperature_drop: 1
     moving_speed_kph: 0.1
-    able_to_use_ammo: false
+    able_to_use_weapon: false
   neck:
     probability: 0.25
-    death_minutes: 5
+    death_minutes_mean: 5
+    death_minutes_stdev: 0.25
     pulse_rate_surge: 50
     body_temperature_drop: 2
     moving_speed_kph: 0
-    able_to_use_ammo: false
+    able_to_use_weapon: false
   head:
     probability: 0.1
-    death_minutes: 1
+    death_minutes_mean: 1
+    death_minutes_stdev: 0.1
     pulse_rate_surge: 50
     body_temperature_drop: 2
     moving_speed_kph: 0
-    able_to_use_ammo: false
+    able_to_use_weapon: false
