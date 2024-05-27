@@ -23,3 +23,9 @@ To stop the demo: `./stop_demo.sh`
 ![image](docs/elastic_dashboard_troops_history.png)
 ![image](docs/postgres_table_deceased.png)
 ![image](docs/postgres_table_injured.png)
+
+
+## External References
+Check out [Confluent's Developer portal](https://developer.confluent.io), it has free courses, documents, articles, blogs, podcasts and so many more content to get you up and running with a fully managed Apache Kafka service.
+
+Disclaimer: I work for Confluent :wink:
