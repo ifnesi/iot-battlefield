@@ -1,4 +1,4 @@
-CREATE STREAM IF NOT EXISTS `$TROOPS.kafka.topic_data-injuried` AS
+CREATE STREAM IF NOT EXISTS `$TROOPS.kafka.topic_data-injured` AS
 SELECT
     `id`,
     `key`,
