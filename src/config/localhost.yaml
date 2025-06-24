@@ -1,0 +1,12 @@
+#######################
+# Kafka configuration #
+#######################
+kafka:
+  bootstrap.servers: localhost:9092
+
+
+##################################
+# Schjema Registry configuration #
+##################################
+schema-registry:
+  url: http://localhost:8081

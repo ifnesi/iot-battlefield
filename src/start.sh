@@ -55,6 +55,7 @@ sleep 90
 # Kibana Dashboard
 logging "Importing Kibana Index/Dashboard"
 curl -X POST "http://kibana:5601/api/saved_objects/_import?createNewCopies=true" -H "kbn-xsrf: true" --form file=@$KIBANA_DASHBOARD
+#curl -X POST "http://localhost:5601/api/saved_objects/_import?createNewCopies=true" -H "kbn-xsrf: true" --form file=@$KIBANA_DASHBOARD
 # POST http://localhost:5601/api/saved_objects/_export
 # Body: {"type": "dashboard", "includeReferencesDeep": true}
 

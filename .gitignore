@@ -4,6 +4,8 @@
 *.pyc
 __pycache__/
 
+_*.py
+
 src/pgadmin/sessions/*
 
 connectors/*
