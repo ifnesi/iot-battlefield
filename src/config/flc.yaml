@@ -15,7 +15,7 @@ kafka:
 ############################
 deployment:
   # Seconds between emulation on FLCs supplies
-  seconds_between_moves: 30
+  seconds_between_moves: 5
   locations:
     #Location name:
       #latitude: Latitude where the FLC will be deployed (in decial degrees)

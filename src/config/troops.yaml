@@ -15,7 +15,7 @@ kafka:
 #####################
 deployment:
   # Seconds between troops move
-  seconds_between_moves: 30
+  seconds_between_moves: 5
   units:
     #Unit name:
       #number_of_units: Number of troops to be deployed on the unit

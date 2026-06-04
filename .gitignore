@@ -7,7 +7,9 @@ __pycache__/
 _*.py
 
 src/pgadmin/sessions/*
+src/pgadmin/pgadmin4.db.*
 
 connectors/*
 !connectors/*.zip
 !connectors/trust-store
+schema.json

@@ -1,7 +1,7 @@
 services:
 
   broker:
-    image: confluentinc/cp-server:$CONFLUENT_PLATFORM_VERSION
+    image: confluentinc/cp-server:${CP_VERSION}
     hostname: broker
     container_name: broker
     platform: $PLATFORM
@@ -46,7 +46,7 @@ services:
       KAFKA_CONFLUENT_CONSUMER_LAG_EMITTER_ENABLED: "true"
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:$CONFLUENT_PLATFORM_VERSION
+    image: confluentinc/cp-schema-registry:${CP_VERSION}
     hostname: schema-registry
     container_name: schema-registry
     platform: $PLATFORM
@@ -60,19 +60,19 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   prometheus:
-    image: confluentinc/cp-enterprise-prometheus:${C3_VERSION:-2.0.0}
+    image: confluentinc/cp-enterprise-prometheus:${CP_PROMETHEUS}
     hostname: cp-enterprise-prometheus
     container_name: prometheus
     volumes:
       - ./vol/config:/mnt/config
     ports:
-      - 9090:9090
+      - "9090:9090"
     environment:
       CONFIG_PATH: "/mnt/config"
       SHOULD_LOG_TO_FILE: false
 
   alertmanager:
-    image: confluentinc/cp-enterprise-alertmanager:${C3_VERSION:-2.0.0}
+    image: confluentinc/cp-enterprise-alertmanager:${CP_ALERTMANAGER}
     hostname: cp-enterprise-alertmanager
     container_name: alertmanager
     depends_on:
@@ -80,16 +80,15 @@ services:
     volumes:
       - ./vol/config:/mnt/config
     ports:
-      - 9093:9093
+      - "9093:9093"
     environment:
       CONFIG_PATH: "/mnt/config"
       SHOULD_LOG_TO_FILE: false
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center-next-gen:${C3_VERSION:-2.0.0}
+    image: confluentinc/cp-enterprise-control-center-next-gen:${CP_C3}
     hostname: control-center
     container_name: control-center
-    platform: $PLATFORM
     depends_on:
       - broker
       - schema-registry
@@ -98,11 +97,9 @@ services:
       - prometheus
       - alertmanager
     ports:
-      - 9021:9021
+      - "9021:9021"
     volumes:
       - ./vol/config:/mnt/config
-    command: "bash -c 'dub template /etc/confluent/docker/control-center.properties.template /etc/confluent-control-center/control-center.properties && \
-              /etc/confluent/docker/run'"
     environment:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: broker:9094
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
@@ -147,7 +144,7 @@ services:
 
 # Kafka Connect ------------------------------------------------------------------------
   connect-1:
-    image: cnfldemos/cp-server-connect-datagen:$CONFLUENT_DATAGEN_VERSION-7.6.0
+    image: cnfldemos/cp-server-connect-datagen:${CP_DATAGEN}
     hostname: connect-1
     container_name: connect-1
     platform: $PLATFORM
@@ -202,7 +199,7 @@ services:
 
   # PostgreSQL
   postgres:
-    image: debezium/postgres:$POSTGRESQL_VERSION
+    image: debezium/postgres:${POSTGRESQL_VERSION}
     hostname: postgres
     container_name: postgres
     platform: linux/amd64
@@ -236,7 +233,7 @@ services:
 
   # Elastic
   elasticsearch:
-    image: elasticsearch:$ELASTIC_VERSION
+    image: elasticsearch:${ELASTIC_VERSION}
     container_name: elasticsearch
     restart: always
     environment:
@@ -251,7 +248,7 @@ services:
 
   # Kibana
   kibana:
-    image: kibana:$KIBANA_VERSION
+    image: kibana:${KIBANA_VERSION}
     container_name: kibana
     restart: always
     environment:
