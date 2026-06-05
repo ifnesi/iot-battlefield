@@ -31,9 +31,9 @@ All data streams through Apache Kafka, gets processed by ksqlDB, and is visualiz
 ### Data Flow
 
 ```
-Emulator (Python) → Kafka Topics → ksqlDB Processing → Sinks
-                                                      ├─→ Elasticsearch/Kibana
-                                                      └─→ PostgreSQL
+Emulator (Python) → (Input) Kafka Topics → ksqlDB Processing → (Output) Kafka Topics → Sinks
+                                                                                        ├─→ Elasticsearch/Kibana
+                                                                                        └─→ PostgreSQL
 ```
 
 ### Kafka Topics
@@ -47,11 +47,85 @@ Emulator (Python) → Kafka Topics → ksqlDB Processing → Sinks
 
 ### ksqlDB Processing
 
-The demo includes sophisticated stream processing:
-- **Tables**: Troops, Tanks, and FLC state tables
-- **Streams**: Movement tracking, injury detection, casualty reporting
-- **Joins**: Enriching movement data with entity state
-- **Filtering**: Identifying injured troops, deceased troops, and destroyed tanks
+The demo includes sophisticated stream processing with the following ksqlDB statements (executed in order):
+
+#### Troops Processing
+
+1. **000_TABLE-TROOPS.sql** - Creates troops state table
+   - **Input**: `iot_battlefield_troops` topic
+   - **Purpose**: Maintains current state of each troop (name, rank, blood type, etc.)
+   - **Type**: TABLE (keyed by troop ID)
+
+2. **001_STREAM-TROOPS_MOVES.sql** - Creates troops movement stream
+   - **Input**: `iot_battlefield_troops_moves` topic
+   - **Purpose**: Captures real-time troop movements and status updates
+   - **Type**: STREAM
+
+3. **002_STREAM-TROOPS.sql** - Joins troops data with movements
+   - **Input**: `iot_battlefield_troops_moves` (stream) + `iot_battlefield_troops` (table)
+   - **Output**: `iot_battlefield_troops-joined` stream
+   - **Purpose**: Enriches movement data with static troop information (name, rank, blood type)
+   - **Type**: STREAM (join result)
+
+4. **003_STREAM-TROOPS_INJURED.sql** - Filters injured troops
+   - **Input**: `iot_battlefield_troops-joined` stream
+   - **Output**: `iot_battlefield_troops-injured` stream
+   - **Purpose**: Identifies troops with injuries (WHERE injury IS NOT NULL)
+   - **Type**: STREAM (filtered)
+
+5. **004_STREAM-TROOPS_DECEASED.sql** - Filters deceased troops
+   - **Input**: `iot_battlefield_troops-joined` stream
+   - **Output**: `iot_battlefield_troops-deceased` stream
+   - **Purpose**: Identifies deceased troops (WHERE deceased = true)
+   - **Type**: STREAM (filtered)
+
+#### Tanks Processing
+
+6. **100_TABLE-TANKS.sql** - Creates tanks state table
+   - **Input**: `iot_battlefield_tanks` topic
+   - **Purpose**: Maintains current state of each tank (unit, model)
+   - **Type**: TABLE (keyed by tank ID)
+
+7. **101_STREAM-TANKS_MOVES.sql** - Creates tanks movement stream
+   - **Input**: `iot_battlefield_tanks_moves` topic
+   - **Purpose**: Captures real-time tank movements and damage updates
+   - **Type**: STREAM
+
+8. **102_STREAM-TANKS.sql** - Joins tanks data with movements
+   - **Input**: `iot_battlefield_tanks_moves` (stream) + `iot_battlefield_tanks` (table)
+   - **Output**: `iot_battlefield_tanks-joined` stream
+   - **Purpose**: Enriches movement data with static tank information (unit, model)
+   - **Type**: STREAM (join result)
+
+9. **103_STREAM-TANKS_DESTROYED.sql** - Filters destroyed tanks
+   - **Input**: `iot_battlefield_tanks-joined` stream
+   - **Output**: `iot_battlefield_tanks-destroyed` stream
+   - **Purpose**: Identifies destroyed tanks (WHERE destroyed = true)
+   - **Type**: STREAM (filtered)
+
+#### Front Line Command Processing
+
+10. **200_TABLE-FLC.sql** - Creates FLC state table
+    - **Input**: `iot_battlefield_flc` topic
+    - **Purpose**: Maintains current state of each FLC (city, location)
+    - **Type**: TABLE (keyed by FLC ID)
+
+11. **201_STREAM-FLC_MOVES.sql** - Creates FLC updates stream
+    - **Input**: `iot_battlefield_flc_moves` topic
+    - **Purpose**: Captures real-time FLC supply level changes
+    - **Type**: STREAM
+
+12. **202_STREAM-FLC.sql** - Joins FLC data with updates
+    - **Input**: `iot_battlefield_flc_moves` (stream) + `iot_battlefield_flc` (table)
+    - **Output**: `iot_battlefield_flc-joined` stream
+    - **Purpose**: Enriches supply updates with static FLC information (city, location)
+    - **Type**: STREAM (join result)
+
+**Key Processing Patterns:**
+- **Tables**: Store static entity information (troops, tanks, FLC metadata)
+- **Streams**: Capture time-series events (movements, status changes)
+- **Joins**: Enrich transactional data with reference data
+- **Filtering**: Route specific events (injuries, casualties, destruction) to dedicated streams
 
 ## 🚀 Quick Start
 
