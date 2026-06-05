@@ -232,9 +232,9 @@ Customize deployment parameters in YAML files:
 
 ### Deployment Units
 
-**Troops**: Luhansk (100 units), Mariupol (100 units)
-**Tanks**: Luhansk (50 units), Mariupol (50 units)
-**FLC Centers**: Luhansk, Mariupol, Kyiv, Uman, Cherkasy, Sumy, Kharkiv, Zaprizhzhia, Svatove, Shoshka, London
+- **Troops**: Luhansk (100 units), Mariupol (100 units)
+- **Tanks**: Luhansk (50 units), Mariupol (50 units)
+- **FLC Centers**: Luhansk, Mariupol, Kyiv, Uman, Cherkasy, Sumy, Kharkiv, Zaprizhzhia, Svatove, Shoshka, London
 
 ## 📸 Screenshots
 
