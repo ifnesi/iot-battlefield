@@ -238,18 +238,47 @@ Customize deployment parameters in YAML files:
 
 ## 📸 Screenshots
 
+### Confluent Control Center
+
 ![Kafka Topics](docs/cp_kafka_topics.png)
+*Kafka Topics view showing all battlefield data streams (troops, tanks, FLC)*
+
 ![Connectors](docs/cp_connectors.png)
+*Kafka Connect connectors - Elasticsearch and PostgreSQL sinks*
+
 ![ksqlDB](docs/cp_ksqldb.png)
+*ksqlDB streams and tables for real-time data processing*
+
+### Kibana Dashboards
+
 ![Elastic Dashboards](docs/elastic_dashboards.png)
+*Kibana dashboard list showing all available battlefield visualizations*
+
 ![Main Dashboard](docs/elastic_main_dashboard.png)
+*Main battlefield overview dashboard with real-time metrics*
+
 ![FLC Dashboard](docs/elastic_dashboard_flc.png)
+*Front Line Command dashboard showing supply levels across all locations*
+
 ![Tanks Facts](docs/elastic_dashboard_tanks_facts.png)
+*Tank facts dashboard - current status, damage levels, and positions*
+
 ![Tanks History](docs/elastic_dashboard_tanks_history.png)
+*Tank history dashboard - historical trends and movement patterns*
+
 ![Troops Facts](docs/elastic_dashboard_troops_facts.png)
+*Troop facts dashboard - current health status, injuries, and positions*
+
 ![Troops History](docs/elastic_dashboard_troops_history.png)
+*Troop history dashboard - bio-vital trends and casualty statistics*
+
+### PostgreSQL Database
+
 ![PostgreSQL Deceased](docs/postgres_table_deceased.png)
+*PostgreSQL table showing deceased troops with injury details*
+
 ![PostgreSQL Injured](docs/postgres_table_injured.png)
+*PostgreSQL table showing injured troops requiring medical attention*
 
 ## 🛠️ Technical Details
 
