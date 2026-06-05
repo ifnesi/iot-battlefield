@@ -31,9 +31,9 @@ All data streams through Apache Kafka, gets processed by ksqlDB, and is visualiz
 ### Data Flow
 
 ```
-Emulator (Python) → (Input) Kafka Topics → ksqlDB Processing → (Output) Kafka Topics → Sinks
-                                                                                        ├─→ Elasticsearch/Kibana
-                                                                                        └─→ PostgreSQL
+Emulator → Kafka Topics → ksqlDB Processing → Kafka Topics → Sinks
+(Python)   (Input)                            (Output)         ├─→ Elasticsearch/Kibana
+                                                               └─→ PostgreSQL
 ```
 
 ### Kafka Topics
