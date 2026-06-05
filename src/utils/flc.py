@@ -1,3 +1,9 @@
+"""
+Front Line Command (FLC) Emulator Module
+
+This module defines the FLC class that simulates command centers on the battlefield.
+Each FLC tracks supply levels (food, ammunition, health) that fluctuate over time.
+"""
 import time
 import hashlib
 
@@ -6,6 +12,12 @@ from utils._basemodels import ConfigFLCDeploymentBase
 
 
 class FLC:
+    """
+    Represents a Front Line Command center.
+    
+    Tracks supply levels (food, ammunition, health supplies) at fixed locations.
+    Supply levels fluctuate based on consumption and resupply operations.
+    """
     def __init__(
         self,
         location: str,

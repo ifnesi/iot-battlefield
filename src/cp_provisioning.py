@@ -1,3 +1,13 @@
+"""
+Confluent Platform Provisioning Script
+
+This script provisions the Confluent Platform environment by:
+- Creating Kafka topics with Avro schemas
+- Submitting ksqlDB statements for stream processing
+- Configuring Kafka Connect connectors (Elasticsearch and PostgreSQL sinks)
+
+The script runs automatically when the emulator container starts.
+"""
 import os
 import re
 import glob

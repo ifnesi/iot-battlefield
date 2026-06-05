@@ -1,3 +1,15 @@
+"""
+IoT Battlefield Emulator - Deployment Script
+
+This script deploys battlefield units (troops, tanks, or FLC) and emulates their
+real-time behavior by publishing events to Kafka topics.
+
+Usage:
+    python deployment.py --target troops
+    python deployment.py --target tanks
+    python deployment.py --target flc
+    python deployment.py --target troops --dry-run
+"""
 import argparse
 
 from utils import deploy_units

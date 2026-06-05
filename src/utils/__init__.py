@@ -1,3 +1,12 @@
+"""
+IoT Battlefield Utilities Package
+
+This package provides the core functionality for the battlefield emulator:
+- Kafka producer with Avro serialization
+- Unit deployment and movement simulation
+- Configuration management
+- Data streaming to Kafka topics
+"""
 import os
 import sys
 import time
@@ -38,6 +47,12 @@ from utils._basemodels import (
 
 ## Classes
 class Kafka:
+    """
+    Kafka producer wrapper with Avro serialization support.
+    
+    Manages two queues (data and moves) and produces messages to corresponding topics.
+    Uses Schema Registry for Avro schema management.
+    """
     def __init__(
         self,
         target: str,

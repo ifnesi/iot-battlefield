@@ -1,3 +1,9 @@
+"""
+Tank Emulator Module
+
+This module defines the Tank class that simulates armored vehicles on the battlefield.
+Each tank can take damage, be destroyed, move across terrain, and fire ammunition.
+"""
 import time
 import random
 import hashlib
@@ -7,6 +13,12 @@ from utils._basemodels import Coordinate, ConfigTanksDeployment, ConfigTanksMode
 
 
 class Tank:
+    """
+    Represents a single tank (armored vehicle) on the battlefield.
+    
+    Tracks damage accumulation, ammunition, position, speed, and destruction status.
+    Different tank models have varying capabilities and damage thresholds.
+    """
     def __init__(
         self,
         unit: str = None,

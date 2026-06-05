@@ -1,3 +1,10 @@
+"""
+Troop Emulator Module
+
+This module defines the Troop class that simulates individual soldiers on the battlefield.
+Each troop has bio-vital signs (pulse rate, body temperature), can be injured, and moves
+across the battlefield while consuming ammunition.
+"""
 import time
 import random
 import hashlib
@@ -16,6 +23,12 @@ from utils._basemodels import (
 
 
 class Troop:
+    """
+    Represents a single troop (soldier) on the battlefield.
+    
+    Tracks bio-vital signs, injuries, ammunition, position, and movement.
+    Simulates realistic injury progression and eventual death if untreated.
+    """
     def __init__(
         self,
         unit: str = None,
