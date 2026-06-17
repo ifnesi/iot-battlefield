@@ -279,8 +279,25 @@ Customize deployment parameters in YAML files:
 ![PostgreSQL Deceased](docs/postgres_table_deceased.png)
 *PostgreSQL table showing deceased troops with injury details*
 
+Query example:
+```sql
+SELECT DISTINCT ON (name) 
+    unit, name, rank, height, weight, blood_type, lat, lon, ammo, injury, TO_TIMESTAMP(injury_time/1000) AS injury_time, TO_TIMESTAMP(timestamp/1000) AS timestamp
+FROM public."iot_battlefield_troops-deceased" 
+ORDER BY name, timestamp DESC;
+```
+
 ![PostgreSQL Injured](docs/postgres_table_injured.png)
 *PostgreSQL table showing injured troops requiring medical attention*
+
+Query example:
+```sql
+SELECT DISTINCT ON (name) 
+    unit, name, rank, health, body_temperature, pulse_rate, height, weight, blood_type, lat, lon, ammo, injury, TO_TIMESTAMP(injury_time/1000) AS injury_time, TO_TIMESTAMP(timestamp/1000) AS timestamp
+FROM public."iot_battlefield_troops-injured" 
+WHERE deceased IS FALSE
+ORDER BY name, timestamp DESC;
+```
 
 ## 🛠️ Technical Details
 
