@@ -15,6 +15,8 @@ All data streams through Apache Kafka, gets processed by ksqlDB, and is visualiz
 
 ## 🏗️ Architecture
 
+![Demo Architecture](docs/demo_architecture.png)
+
 ### Components
 
 - **Apache Kafka** (KRaft mode) - Event streaming platform
